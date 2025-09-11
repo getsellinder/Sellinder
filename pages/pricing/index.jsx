@@ -72,7 +72,7 @@ const index = () => {
         <div className="p-6 border rounded-2xl text-center">
           <div className="text-sm text-slate-500">Pro</div>
           <div className="mt-2 text-2xl font-bold">
-            {yearly ? "₹24,990" : "₹2,499"}
+            {yearly ? "₹29,990" : "₹2,999"}
             <span className="text-sm">{yearly ? "/yr" : "/mo"}</span>
           </div>
           <div className="mt-1 text-xs text-slate-400">
@@ -82,7 +82,7 @@ const index = () => {
           </div>
           <div className="mt-3 text-sm text-slate-600 text-left">
             <div>
-              • {yearly ? "240 searches / year" : "24 searches / month"}
+              • {yearly ? "240 searches / year" : "40 searches / month"}
             </div>
             <div>• 1 user</div>
             <div>• Interest Prediction</div>
@@ -109,7 +109,7 @@ const index = () => {
           </div>
           <div className="text-sm text-slate-500">Growth</div>
           <div className="mt-2 text-2xl font-bold">
-            {yearly ? "₹49,990" : "₹4,999"}
+            {yearly ? "₹51,990" : "₹5,199"}
             <span className="text-sm">{yearly ? "/yr" : "/mo"}</span>
           </div>
           <div className="mt-1 text-xs text-slate-400">
@@ -119,7 +119,7 @@ const index = () => {
           </div>
           <div className="mt-3 text-sm text-slate-600 text-left">
             <div>
-              • {yearly ? "600 searches / year" : "60 searches / month"}
+              • {yearly ? "600 searches / year" : "80 searches / month"}
             </div>
             <div>• Up to 3 users</div>
             <div>• Interest Prediction</div>
