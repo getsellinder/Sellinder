@@ -9,6 +9,7 @@ const index = () => {
   <div className="min-h-screen bg-white text-slate-800 flex flex-col  w-100 ">
     <Header/>
     <section id="pricing" className="mt-12 p-5">
+                <h1 className="text-3xl font-bold text-center w-100"> Pricing Plans</h1>
       <div className="flex items-center justify-between">
              <div >
           <h3 className="text-xl font-bold">💳 Pricing Plans</h3>

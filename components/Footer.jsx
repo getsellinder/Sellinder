@@ -1,4 +1,6 @@
 import React from 'react'
+import { Documents, Images } from '../pages/images'
+import Link from 'next/link'
 
 const Footer = () => {
   return (
@@ -6,7 +8,8 @@ const Footer = () => {
          <footer className="mt-12 bg-slate-900 text-slate-100">
         <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
-            <img src="/assets/logo.svg" alt="Sellinder" className="h-10 w-auto mb-3 filter brightness-0 invert" />
+                 <img src={Images.logodarkbg} alt="Sellinder" className="h-10 w-auto mb-3 filter brightness-0 invert" />
+
             <div className="text-sm text-slate-300">Sellinder helps sales teams know their buyers before they meet — smarter conversations, better outcomes.</div>
           </div>
 
@@ -23,10 +26,10 @@ const Footer = () => {
           <div>
             <div className="font-semibold mb-3">Legal</div>
             <ul className="text-sm text-slate-300 space-y-2">
-              <li><a href="#" className="hover:underline">Terms & Conditions</a></li>
-              <li><a href="#" className="hover:underline">Privacy Policy</a></li>
-              <li><a href="#" className="hover:underline">Refund Policy</a></li>
-              <li><a href="#" className="hover:underline">Shipping Policy</a></li>
+              <li><Link href={Documents.TermsAndConditions} className="hover:underline">Terms & Conditions</Link></li>
+              <li><Link href={Documents.PrivacyPolicy} className="hover:underline">Privacy Policy</Link></li>
+              <li><Link href={Documents.RefundPolicy} className="hover:underline">Refund Policy</Link></li>
+              <li><Link href={Documents.ShippingPolicy} className="hover:underline">Shipping Policy</Link></li>
             </ul>
           </div>
 

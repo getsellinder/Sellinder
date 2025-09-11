@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import WhatSellinderDoes from "./WhatSellinderDoes";
 
 export default function SellinderLanding() {
   const [yearly, setYearly] = useState(false);
@@ -89,7 +90,7 @@ export default function SellinderLanding() {
           </section>
 
           {/* What Sellinder Does - standout background */}
-          <section id="features" className="mt-10 bg-orange-50 border rounded-2xl p-8">
+          {/* <section id="features" className="mt-10 bg-orange-50 border rounded-2xl p-8">
             <div className="md:grid md:grid-cols-2 gap-8 items-start">
               <div>
                 <h2 className="text-2xl font-bold">What Sellinder Does</h2>
@@ -140,7 +141,8 @@ export default function SellinderLanding() {
                 </div>
               </div>
             </div>
-          </section>
+          </section> */}
+          {/* <WhatSellinderDoes/> */}
 
           {/* Value Proposition */}
           <section id="value" className="mt-12">
