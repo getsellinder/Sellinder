@@ -6,13 +6,15 @@ const index = () => {
   const [yearly, setYearly] = useState(false);
   const togglePricing = () => setYearly((v) => !v);
   return (
-  <div className="min-h-screen bg-white text-slate-800 flex flex-col  w-100 ">
-    <Header/>
-    <section id="pricing" className="mt-12 p-5">
-                <h1 className="text-3xl font-bold text-center w-100"> Pricing Plans</h1>
-      <div className="flex items-center justify-between">
-             <div >
-          <h3 className="text-xl font-bold">💳 Pricing Plans</h3>
+    <>
+  <div className="min-h-screen bg-white text-slate-800">
+    <Header />
+       <h1 className="text-3xl font-bold text-center w-100 mt-4"> Pricing Plans</h1>
+    <section id="pricing" className="mt-12 p- max-w-6xl mx-auto px-6 ">
+             
+      <div className="flex items-center justify-between w-full">
+             <div className="w-1/2">
+          <h3 className="text-xl font-bold ">💳 Pricing Plans</h3>
           <p className="mt-2 text-slate-600">
             Choose a plan that fits your team and scale as you grow. Growth Plan
             is our <span className="font-semibold">Most Popular</span> choice —
@@ -20,7 +22,7 @@ const index = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ">
      
           <span className="text-sm text-slate-600">Monthly</span>
           <button
@@ -168,6 +170,7 @@ const index = () => {
     </section>
       <Footer/>
     </div>
+    </>
   );
 };
 
