@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { Images } from "../pages/images";
+import { Images } from "./images";
 
 const Header = () => {
   return (
