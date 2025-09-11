@@ -94,7 +94,7 @@ const index=()=>{
                 <div className="p-6 bg-white border-t">
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-slate-500 font-medium">{f.exampleTitle}</div>
-                    <div className="text-xs text-slate-400">Simple example</div>
+                    {/* <div className="text-xs text-slate-400">Simple example</div> */}
                   </div>
 
                   <pre className="mt-3 whitespace-pre-wrap text-sm text-slate-700 bg-slate-50 p-4 rounded-md border border-slate-100">
@@ -102,8 +102,8 @@ const index=()=>{
                   </pre>
 
                   <div className="mt-4 flex gap-3">
-                    <a href="#start" className="inline-block px-4 py-2 rounded-lg bg-orange-500 text-white text-sm font-semibold">Use this approach</a>
-                    <a href="#pricing" className="inline-block px-4 py-2 rounded-lg border text-sm">See plans</a>
+                    <a href="/pricing" className="inline-block px-4 py-2 rounded-lg bg-orange-500 text-white text-sm font-semibold">See plans</a>
+                    {/* <a href="/pricing" className="inline-block px-4 py-2 rounded-lg border text-sm">See plans</a> */}
                   </div>
                 </div>
               </article>
@@ -114,7 +114,7 @@ const index=()=>{
           <section className="mt-12 bg-slate-50 border rounded-2xl p-8">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold">Quick Templates — Copy & Paste</h2>
-              <div className="text-sm text-slate-500">Personalize with the prospect’s post or role</div>
+              {/* <div className="text-sm text-slate-500">Personalize with the prospect’s post or role</div> */}
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -154,49 +154,23 @@ const index=()=>{
           {/* Why it matters section */}
           <section className="mt-12 text-center">
             <div className="max-w-2xl mx-auto">
-              <h3 className="text-lg font-semibold">Why this helps you close more</h3>
+              {/* <h3 className="text-lg font-semibold">Why this helps you close more</h3> */}
+<h3 className="text-lg font-semibold">
+  <span className="text-xl font-bold">Features</span> That Help You Close More
+</h3>
+
               <p className="mt-3 text-slate-600">
                 Stop wasting time on generic outreach. Use Sellinder to make every first message feel personal and relevant —
                 get faster responses and more qualified conversations.
               </p>
               <div className="mt-6">
-                <a href="#start" className="inline-block px-5 py-3 bg-orange-500 text-white rounded-2xl font-semibold">Start free</a>
+                <a href="/pricing" className="inline-block px-5 py-3 bg-orange-500 text-white rounded-2xl font-semibold">Start free</a>
               </div>
             </div>
           </section>
         </main>
 
-        {/* Lightweight footer (consistent with main site) */}
-        {/* <footer className="bg-slate-900 text-slate-100 mt-16">
-          <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row md:justify-between gap-6">
-            <div>
-              <img src="/assets/logo.svg" alt="Sellinder" className="h-8 w-auto mb-2 filter brightness-0 invert" />
-              <div className="text-sm text-slate-400 max-w-xs">Sellinder helps salespeople know buyers before they meet — smarter conversations, better outcomes.</div>
-            </div>
-
-            <div className="flex gap-8">
-              <div>
-                <div className="font-medium">Links</div>
-                <ul className="text-sm text-slate-400 mt-2 space-y-1">
-                  <li><Link href="/">Home</Link></li>
-                  <li><Link href="/features">Features</Link></li>
-                  <li><Link href="/pricing">Pricing</Link></li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="font-medium">Follow</div>
-                <div className="text-sm text-slate-400 mt-2 space-y-1">
-                  <div>LinkedIn</div>
-                  <div>Twitter</div>
-                  <div>Instagram</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-slate-800 text-slate-400 text-center py-3 text-sm">© {new Date().getFullYear()} Sellinder. All rights reserved.</div>
-        </footer> */}
+      
         <Footer/>
       </div>
     </>

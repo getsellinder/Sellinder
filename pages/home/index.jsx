@@ -44,7 +44,7 @@ const HomePage = () => {
               </p>
 
               <div className="mt-6 flex gap-3">
-                <a href="#start" className="inline-flex items-center gap-2 bg-orange-500 text-white px-5 py-3 rounded-2xl font-semibold shadow hover:opacity-95">Get Started</a>
+                <a href="/pricing" className="inline-flex items-center gap-2 bg-orange-500 text-white px-5 py-3 rounded-2xl font-semibold shadow hover:opacity-95">Get Started</a>
                 <a href="#features" className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-slate-200">See Features</a>
               </div>
 
