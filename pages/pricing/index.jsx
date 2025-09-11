@@ -10,7 +10,7 @@ const index = () => {
     <Header/>
     <section id="pricing" className="mt-12 p-5">
       <div className="flex items-center justify-between">
-        <div className="text-center">
+             <div >
           <h3 className="text-xl font-bold">💳 Pricing Plans</h3>
           <p className="mt-2 text-slate-600">
             Choose a plan that fits your team and scale as you grow. Growth Plan
@@ -20,6 +20,7 @@ const index = () => {
         </div>
 
         <div className="flex items-center gap-3">
+     
           <span className="text-sm text-slate-600">Monthly</span>
           <button
             onClick={togglePricing}

@@ -9,7 +9,8 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <img src="/assets/logo.svg" alt="Sellinder" className="h-10 w-auto" />
             <nav className="hidden md:flex gap-6 text-slate-600">
-              <a href="#home" className="hover:text-slate-900">Home</a>
+              <Link href="/home">Home</Link>
+              {/* <a href="#home" className="hover:text-slate-900">Home</a> */}
               {/* <a href="#pricing" className="hover:text-slate-900">Pricing</a> */}
                 <Link href="/pricing">Pricing</Link>
               <Link href="/contact">Contact Us</Link>
