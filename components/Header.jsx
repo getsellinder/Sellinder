@@ -10,7 +10,7 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <Link href="/home">
               <img
-                src={Images.logowhitebg}
+                src={Images.logodarkbg}
                 alt="Sellinder"
                 className="h-10 w-auto"
               />

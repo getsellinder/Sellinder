@@ -172,14 +172,14 @@ const HomePage = () => {
           </section>
 
           {/* Target Users */}
-          <section id="users" className="mt-12">
+          {/* <section id="users" className="mt-12">
             <h3 className="text-xl font-bold">Built for Growth-Minded Teams</h3>
             <div className="mt-4 flex gap-4 flex-wrap">
               <div className="p-4 border rounded-lg min-w-[180px]">Sales Professionals</div>
               <div className="p-4 border rounded-lg min-w-[180px]">Revenue Teams</div>
               <div className="p-4 border rounded-lg min-w-[180px]">Founders & Entrepreneurs</div>
             </div>
-          </section>
+          </section> */}
 
           {/* Social Proof */}
           <section id="social" className="mt-12">
@@ -194,11 +194,7 @@ const HomePage = () => {
               ))}
             </div>
 
-            <div className="mt-6 flex items-center gap-4">
-              <div className="h-8 w-24 bg-slate-100 rounded"></div>
-              <div className="h-8 w-24 bg-slate-100 rounded"></div>
-              <div className="h-8 w-24 bg-slate-100 rounded"></div>
-            </div>
+          
           </section>
         </div>
       </main>

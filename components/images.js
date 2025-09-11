@@ -12,3 +12,11 @@ export const Documents ={
       RefundPolicy:"/assets/Refund_Policy.pdf",
        PrivacyPolicy:"/assets/Privacy_Policy.pdf",
 }
+
+
+export const socialmedia ={
+    linkedin:"https://www.linkedin.com/showcase/sellinder/",
+     facebook:"https://www.facebook.com/sellinder",
+      instagram:"https://www.instagram.com/getsellinder",
+       twitter:" https://x.com/sellinder",
+}
