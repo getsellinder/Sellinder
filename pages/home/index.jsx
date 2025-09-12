@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import WhatSellinderDoes from "../../components/WhatSellinderDoes";
+import Hero from "../../components/Hero";
 
 
 const HomePage = () => {
@@ -28,53 +29,13 @@ const HomePage = () => {
       {/* Header */}
      
       <Header/>
+          <Hero/>
 
       {/* Main content */}
       <main className="flex-1">
         <div className="max-w-6xl mx-auto px-6 py-12">
           {/* Hero */}
-          <section id="home" className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
-                Know your customer <span className="text-orange-500">before you meet</span>
-              </h1>
-              <p className="mt-4 text-lg text-slate-600">
-                Stop guessing—start selling smarter. Sellinder analyzes your prospect's LinkedIn profile and activity to
-                generate a concise buyer intelligence report tailored for every meeting.
-              </p>
-
-              <div className="mt-6 flex gap-3">
-                <a href="/pricing" className="inline-flex items-center gap-2 bg-orange-500 text-white px-5 py-3 rounded-2xl font-semibold shadow hover:opacity-95">Get Started</a>
-                <a href="#features" className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-slate-200">See Features</a>
-              </div>
-
-              <div className="mt-6 text-sm text-slate-500">Trusted by sales teams and founders who sell with confidence.</div>
-            </div>
-
-            <div className="flex justify-center md:justify-end">
-              {/* Mockup card */}
-              <div className="w-full max-w-md bg-gradient-to-b from-white to-slate-50 border border-slate-100 rounded-2xl p-5 shadow">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <div className="text-xs text-slate-400">Buyer: Priya K.</div>
-                    <div className="font-semibold">Interest: Likely</div>
-                  </div>
-                  <div className="text-xs text-slate-400">Profile: LinkedIn</div>
-                </div>
-
-                <div className="bg-white border border-slate-100 rounded-lg p-4">
-                  <div className="text-sm font-medium">Conversation Playbook</div>
-                  <ul className="mt-2 text-sm text-slate-600 space-y-1">
-                    <li>• Lead with recent post about product-market fit</li>
-                    <li>• Talk about streamlining onboarding</li>
-                    <li>• Avoid pricing talk early</li>
-                  </ul>
-                </div>
-
-                <div className="mt-4 text-xs text-slate-500">Generated from LinkedIn activity • Confidential</div>
-              </div>
-            </div>
-          </section>
+   
 
           {/* Problem */}
           <section id="problem" className="mt-12 bg-orange-50 rounded-2xl p-6">
