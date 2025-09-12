@@ -4,23 +4,23 @@ import { Images } from "./images";
 import { usePathname } from "next/navigation";
 
 const Header = () => {
-
-  const [active,setActive]=useState("home")
-    const pathname = usePathname();
-    const links = [
+  const [active, setActive] = useState("home");
+  const pathname = usePathname();
+  console.log("pathname", pathname);
+  const links = [
     { name: "Home", path: "/home" },
     { name: "Features", path: "/features" },
     { name: "Pricing", path: "/pricing" },
-       { name: "Contact Us", path: "/contact" },
-       { name: "Login", path: "/login" },
- 
+    { name: "Contact Us", path: "/contact" },
+    { name: "Login", path: "/login" },
   ];
+
   return (
     <div className=" bg-white text-slate-800 flex flex-col">
       <header className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/home">
+            <Link href="/">
               <img
                 src={Images.logowhitebg}
                 alt="Sellinder"
@@ -29,20 +29,39 @@ const Header = () => {
             </Link>
 
             <nav className="hidden md:flex gap-6 text-slate-600">
-                  {links.map((link) => (
-        <Link
-          key={link.name}
-          href={link.path}
-          className={`px-4 py-2 rounded-lg transition ${
-            pathname === link.path
-              ? "bg-orange-500 text-white font-semibold"
-              : "hover:bg-orange-100"
-          }`}
-        >
-          {link.name}
-        </Link>
-      ))}
-              
+              {links
+
+                .filter((link) => !(pathname === "/" && link.name === "Home"))
+                .map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.path}
+                    className={`px-4 py-2 rounded-lg transition ${
+                      pathname === link.path
+                        ? "bg-orange-500 text-white font-semibold"
+                        : "hover:bg-orange-100"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+
+              {/* {links.map((link) => {
+            
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.path}
+                    className={`px-4 py-2 rounded-lg transition ${
+                      pathname === link.path
+                        ? "bg-orange-500 text-white font-semibold"
+                        : "hover:bg-orange-100"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })} */}
             </nav>
           </div>
 

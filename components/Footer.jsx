@@ -118,7 +118,7 @@ const Footer = () => {
       </div>
 
       <div className="bg-slate-800 text-slate-400 text-center text-sm py-4">
-        © {new Date().getFullYear()} Sellinder. All rights reserved.
+        © {new Date().getFullYear()} 2024 Neonflake Enterprises OPC Pvt Ltd. All rights reserved
       </div>
     </footer>
   );
