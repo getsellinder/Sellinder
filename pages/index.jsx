@@ -8,8 +8,8 @@ export default function Home() {
       <Head>
         <title>Sellinder — Know your customer before you meet</title>
       </Head>
-      <SellinderLanding/>
-      {/* <HomePage/> */}
+      {/* <SellinderLanding/> */}
+      <HomePage/>
     </>
   )
 }

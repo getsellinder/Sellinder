@@ -8,7 +8,7 @@ const Header = () => {
   const pathname = usePathname();
   console.log("pathname", pathname);
   const links = [
-    { name: "Home", path: "/home" },
+    // { name: "Home", path: "/home" },
     { name: "Features", path: "/features" },
     { name: "Pricing", path: "/pricing" },
     { name: "Contact Us", path: "/contact" },
@@ -29,22 +29,19 @@ const Header = () => {
             </Link>
 
             <nav className="hidden md:flex gap-6 text-slate-600">
-              {links
-
-                .filter((link) => !(pathname === "/" && link.name === "Home"))
-                .map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.path}
-                    className={`px-4 py-2 rounded-lg transition ${
-                      pathname === link.path
-                        ? "bg-orange-500 text-white font-semibold"
-                        : "hover:bg-orange-100"
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
+              {links.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.path}
+                  className={`px-4 py-2 rounded-lg transition ${
+                    pathname === link.path
+                      ? "bg-orange-500 text-white font-semibold"
+                      : "hover:bg-orange-100"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
 
               {/* {links.map((link) => {
             
