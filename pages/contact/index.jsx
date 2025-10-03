@@ -16,6 +16,7 @@ const Contact = () => {
     eamil: "",
     message: ""
   })
+  const [loading, setLoading] = useState(false)
   const handleChange = (e) => {
     const { name, value } = e.target
     setContact((prev) => ({
@@ -25,9 +26,11 @@ const Contact = () => {
   }
 
   const handeleContactRequest = async (e) => {
+
     e.preventDefault();
-    console.log("contact", contact)
+
     try {
+      setLoading(true)
       const resp = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/contact/request/new`, {
         ...contact,
 
@@ -41,8 +44,14 @@ const Contact = () => {
     } catch (error) {
       let msg = error?.
         response?.data?.message
-      console.log("error", error)
       toast.error(msg)
+      setContact({
+        name: "",
+        eamil: "",
+        message: ""
+      })
+    } finally {
+      setLoading(false)
     }
   }
   return (
@@ -106,7 +115,8 @@ const Contact = () => {
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition"
               >
-                Send Message
+                {loading ? "Loading....." : "Send Message"}
+
               </button>
             </form>
           </div>
