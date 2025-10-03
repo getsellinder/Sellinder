@@ -8,6 +8,7 @@ import WhatSellinderDoes from "../../components/WhatSellinderDoes";
 import Hero from "../../components/Hero";
 
 
+
 const HomePage = () => {
       const [yearly, setYearly] = useState(false);
       const togglePricing = () => setYearly((v) => !v);
@@ -159,8 +160,9 @@ const HomePage = () => {
           </section>
         </div>
       </main>
+   
 
-      {/* Footer */}
+  
      <Footer/>
     </div>
   )
