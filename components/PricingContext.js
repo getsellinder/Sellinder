@@ -4,7 +4,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { isAutheticated } from "../../components/isAuthticated";
+import { isAutheticated } from "./isAuthticated";
 
 const PlanContext = createContext()
 

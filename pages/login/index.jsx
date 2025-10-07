@@ -6,7 +6,7 @@ import { Images } from "../../components/images"
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { useRouter } from "next/router";
-import  usePlan  from '../pricing/PricingContext';
+import  usePlan  from '../../components/PricingContext';
 import toast from 'react-hot-toast';
 
 const Login = () => {
