@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import axios from "axios";
-import { usePlan } from "./PricingContext";
+import  usePlan  from "./PricingContext";
 
 import { useRouter } from "next/router";
 

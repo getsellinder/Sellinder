@@ -96,4 +96,6 @@ export const AppProvider = ({ children }) => {
     )
 }
 
-export const usePlan = () => useContext(PlanContext)
+ const usePlan = () => useContext(PlanContext)
+
+ export default usePlan
