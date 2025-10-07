@@ -13,6 +13,7 @@ const Login = () => {
   const url = process.env.NEXT_PUBLIC_API_URL
   const { handlePayment } = usePlan()
 
+
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
@@ -90,6 +91,7 @@ const Login = () => {
       await handlePayment(planId, durationType, finalUser)
 
       console.log('Login success - user:', finalUser, 'token:', Boolean(token));
+      router.push("/pricing")
 
       // onLogin(finalUser);
       // onNavigate('dashboard');

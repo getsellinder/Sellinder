@@ -35,11 +35,10 @@ export const AppProvider = ({ children }) => {
     }
 
     const handlePayment = async (planId, durationType, finalUser) => {
-
         try {
             const resp = await axios.post(
                 `${url}/api/package/purchase/${planId}`,
-                { durationType: durationType }, 
+                { durationType: durationType },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -55,7 +54,7 @@ export const AppProvider = ({ children }) => {
             }
             const options = {
                 key: key_id,
-             
+
                 currency,
                 name: "Sellinder",
                 description: "Plan Purchase",

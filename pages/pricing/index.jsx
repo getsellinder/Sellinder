@@ -76,14 +76,39 @@ const index = () => {
                   {item.Package === "Enterprise" && <div className="mt-2 text-2xl font-bold">Custom</div>}
 
 
-                  <div className="mt-2 text-2xl font-bold">
+                  {/* <div className="mt-2 text-2xl font-bold">
                     {yearly ? `${item.Total_Yearly_Price == null ? 0 : item.Total_Yearly_Price} ` : `${item.Total_Monthly_Price == null ? 0 : item.Total_Monthly_Price} `}
                     <span className="text-sm">{yearly ? "/yr" : "/mo"}</span>
+                  </div> */}
+                  <div className="mt-2 text-2xl font-bold">
+                    {item.Package !== "Enterprise" && (
+                      <>
+                        {yearly
+                          ? `${item.Total_Yearly_Price == null ? 0 : item.Total_Yearly_Price}`
+                          : `${item.Total_Monthly_Price == null ? 0 : item.Total_Monthly_Price}`}
+                        <span className="text-sm">{yearly ? "/yr" : "/mo"}</span>
+                      </>
+                    )}
                   </div>
                   <div className="mt-1 text-xs text-slate-400">
-                    {yearly
-                      ? "Billed yearly (2 months free)"
-                      : "Monthly billing available"}
+                    <div className="text-sm text-gray-500">
+                      {yearly ? (
+                        item.Package === "Free" ? (
+                          "Yearly: Free"
+                        ) : item.Package === "Pro" || item.Package === "Growth" ? (
+                          "Billed yearly (2 months free)"
+                        ) : item.Package === "Enterprise" ? (
+                          "Contact Sales for pricing"
+                        ) : null
+                      ) : item.Package === "Free" ? (
+                        ""
+                      ) : item.Package === "Pro" || item.Package === "Growth" ? (
+                        "Monthly billing available"
+                      ) : item.Package === "Enterprise" ? (
+                        "Contact Sales for pricing"
+                      ) : null}
+                    </div>
+
                   </div>
                   <div className="mt-3 text-sm text-slate-600 text-left">
 
@@ -102,7 +127,7 @@ const index = () => {
                     </button>
                   </div>}
                   {item.Package === "Enterprise" && <div className="mt-6">
-                    <button onClick={() => handlePlanSelect(item)}
+                    <button onClick={() => Router.push("/contact")}
 
                       className="inline-block w-full px-4 py-2 rounded-lg border border-slate-200"
                     >
