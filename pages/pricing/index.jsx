@@ -145,12 +145,12 @@ const index = () => {
                   </div>}
 
                   {item.Package === "Free" && <div className="mt-6">
-                    <a
-                      href="#"
+                    <button onClick={() => handlePlanSelect(item)}
+                     
                       className="inline-block w-full px-4 py-2 rounded-lg border border-slate-200"
                     >
                       Start Free
-                    </a>
+                    </button>
                   </div>}
 
 

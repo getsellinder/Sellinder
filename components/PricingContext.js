@@ -50,6 +50,10 @@ export const AppProvider = ({ children }) => {
                 }
             );
 
+            if (resp.data.message === "Free plan activated successfully") {
+                toast.success("🎉 Free plan activated successfully!");
+                return; // stop here, don't open Razorpay
+            }
             const { key_id, amount, currency, order_id } = resp.data;
             if (!window.Razorpay) {
                 console.error("Razorpay SDK not loaded");
@@ -99,6 +103,6 @@ export const AppProvider = ({ children }) => {
     )
 }
 
- const usePlan = () => useContext(PlanContext)
+const usePlan = () => useContext(PlanContext)
 
- export default usePlan
+export default usePlan
