@@ -24,7 +24,19 @@ const index = () => {
 
   }
 
+let pricingsubtitle = {
+    fontSize: "1rem",
+    lineHeight: "1.6",
+    color: "#475569",
+    maxWidth: "600px",
+  }
 
+  let pricingtitle = {
+    fontSize: "1rem",
+    lineHeight: "1.6",
+    color: "#475569",
+    maxWidth: "600px",
+  }
 
   return (
     <>
@@ -72,7 +84,7 @@ const index = () => {
                     </div>
                   </div>}
 
-                  <div className="text-sm text-slate-500">{item.Package}</div>
+                  <div className="text-sm text-slate-600" style={{fontWeight:"600"}}>{item.Package}</div>
                   {item.Package === "Enterprise" && <div className="mt-2 text-2xl font-bold">Custom</div>}
 
 
@@ -91,7 +103,7 @@ const index = () => {
                     )}
                   </div>
                   <div className="mt-1 text-xs text-slate-400">
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-gray-500" style={{...pricingtitle}}>
                       {yearly ? (
                         item.Package === "Free" ? (
                           "Yearly: Free"
@@ -113,9 +125,9 @@ const index = () => {
                   <div className="mt-3 text-sm text-slate-600 text-left">
 
                     {yearly ? item.Yearly_features.map((data) => (
-                      <div>• {data}</div>
+                      <div style={{...pricingsubtitle}}>• {data}</div>
                     )) : item.Monthly_features.map((data) => (
-                      <div>• {data}</div>
+                      <div style={{...pricingsubtitle}}>• {data}</div>
                     ))}
                   </div>
                   {item.Package === "Growth" && <div className="mt-6">
@@ -127,7 +139,7 @@ const index = () => {
                     </button>
                   </div>}
                   {item.Package === "Enterprise" && <div className="mt-6">
-                    <button onClick={() => Router.push("/contact")}
+                    <button onClick={() => Router.push("/contactsales")}
 
                       className="inline-block w-full px-4 py-2 rounded-lg border border-slate-200"
                     >
@@ -159,132 +171,7 @@ const index = () => {
               )
             })}
 
-            {/* <>
-
-       
-            <div className="p-6 border rounded-2xl text-center">
-              <div className="text-sm text-slate-500">Free</div>
-              <div className="mt-2 text-2xl font-bold">
-                ₹0<span className="text-sm">/mo</span>
-              </div>
-              <div className="mt-1 text-xs text-slate-400">
-                {yearly ? "Yearly: Free" : ""}
-              </div>
-              <div className="mt-3 text-sm text-slate-600 text-left">
-                <div>• {yearly ? "24 searches / year" : "2 searches / month"}</div>
-                <div>• 1 user</div>
-                <div>• Interest Prediction</div>
-                <div>• Buyer Insights</div>
-                <div>• Conversation Playbook</div>
-                <div>• Objection Handling</div>
-              </div>
-              <div className="mt-6">
-                <a
-                  href="#"
-                  className="inline-block w-full px-4 py-2 rounded-lg border border-slate-200"
-                >
-                  Start Free
-                </a>
-              </div>
-            </div>
-
-           
-            <div className="p-6 border rounded-2xl text-center">
-              <div className="text-sm text-slate-500">Pro</div>
-              <div className="mt-2 text-2xl font-bold">
-                {yearly ? "₹29,990" : "₹2,999"}
-                <span className="text-sm">{yearly ? "/yr" : "/mo"}</span>
-              </div>
-              <div className="mt-1 text-xs text-slate-400">
-                {yearly
-                  ? "Billed yearly (2 months free)"
-                  : "Monthly billing available"}
-              </div>
-              <div className="mt-3 text-sm text-slate-600 text-left">
-                <div>
-                  • {yearly ? "240 searches / year" : "40 searches / month"}
-                </div>
-                <div>• 1 user</div>
-                <div>• Interest Prediction</div>
-                <div>• Buyer Insights</div>
-                <div>• Conversation Playbook</div>
-                <div>• Objection Handling</div>
-              </div>
-              <div className="mt-6">
-                <a
-                  href="#"
-                  className="inline-block w-full px-4 py-2 rounded-lg bg-orange-500 text-white font-semibold"
-                >
-                  Start Pro
-                </a>
-              </div>
-            </div>
-
-        
-            <div className="p-6 border-2 border-orange-300 rounded-2xl text-center relative bg-white">
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <div className="px-3 py-1 bg-orange-500 text-white text-xs rounded-full font-semibold">
-                  Most Popular ⭐
-                </div>
-              </div>
-              <div className="text-sm text-slate-500">Growth</div>
-              <div className="mt-2 text-2xl font-bold">
-                {yearly ? "₹51,990" : "₹5,199"}
-                <span className="text-sm">{yearly ? "/yr" : "/mo"}</span>
-              </div>
-              <div className="mt-1 text-xs text-slate-400">
-                {yearly
-                  ? "Billed yearly (2 months free)"
-                  : "Monthly billing available"}
-              </div>
-              <div className="mt-3 text-sm text-slate-600 text-left">
-                <div>
-                  • {yearly ? "600 searches / year" : "80 searches / month"}
-                </div>
-                <div>• Up to 3 users</div>
-                <div>• Interest Prediction</div>
-                <div>• Buyer Insights</div>
-                <div>• Conversation Playbook</div>
-                <div>• Objection Handling</div>
-              </div>
-              <div className="mt-6">
-                <a
-                  href="#"
-                  className="inline-block w-full px-4 py-2 rounded-lg bg-orange-600 text-white font-semibold"
-                >
-                  Start Growth
-                </a>
-              </div>
-            </div>
-
-        
-            <div className="p-6 border rounded-2xl text-center">
-              <div className="text-sm text-slate-500">Enterprise</div>
-              <div className="mt-2 text-2xl font-bold">Custom</div>
-              <div className="mt-1 text-xs text-slate-400">
-                Contact Sales for pricing
-              </div>
-              <div className="mt-3 text-sm text-slate-600 text-left">
-                <div>• Custom quota</div>
-                <div>• Flexible users</div>
-                <div>• Interest Prediction</div>
-                <div>• Buyer Insights</div>
-                <div>• Conversation Playbook</div>
-                <div>• Objection Handling</div>
-                <div>• API access</div>
-                <div>• CRM integration</div>
-                <div>• Dedicated support</div>
-              </div>
-              <div className="mt-6">
-                <a
-                  href="#"
-                  className="inline-block w-full px-4 py-2 rounded-lg border border-slate-200"
-                >
-                  Contact Sales
-                </a>
-              </div>
-            </div>
-            </> */}
+         
           </div>
         </section>
         <Footer />

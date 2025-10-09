@@ -37,6 +37,41 @@ export const AppProvider = ({ children }) => {
         }
     }
 
+    const ConfirmPayment = async (planId, durationType, razorpayPaymentId, planAmount) => {
+        // durationType, razorpayPaymentId, planAmount, orderId 
+        try {
+            const data = {
+                durationType: durationType,
+
+                razorpayPaymentId: razorpayPaymentId,
+                planAmount: planAmount
+            }
+            console.log("data", data)
+
+            const resp = await axios.post(
+                `${url}/api/package/confirm/pyment/${planId}`,
+                data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (resp.data.message === "Free plan activated successfully") {
+                toast.success("🎉 Free plan activated successfully!");
+                return; // stop here, don't open Razorpay
+            }
+
+
+        } catch (error) {
+            let msg = error?.response?.data?.message
+            console.error('Payment initiation failed:', error.message);
+            toast.error(msg || "Internal Server error")
+        }
+    }
+
     const handlePayment = async (planId, durationType, finalUser) => {
         try {
             const resp = await axios.post(
@@ -61,18 +96,18 @@ export const AppProvider = ({ children }) => {
             }
             const options = {
                 key: key_id,
-
                 currency,
                 name: "Sellinder",
                 description: "Plan Purchase",
                 order_id,
-                handler: (response) => {
+                handler: async (response) => {
+                    ConfirmPayment(planId, durationType, response.razorpay_payment_id, amount)
                     toast.success(`✅ Payment Successful!\nPayment ID: ${response.razorpay_payment_id}`);
                 },
                 prefill: {
                     name: finalUser?.name || "User",
                     email: finalUser?.email || "user@example.com",
-                    contact: "9999999999",
+                    contact: finalUser?.phone || "9999999999",
                 },
                 theme: {
                     color: "#3399cc",
@@ -86,6 +121,8 @@ export const AppProvider = ({ children }) => {
             toast.error("Internal Server error")
         }
     }
+
+
 
     useEffect(() => {
         handleAllPlans()

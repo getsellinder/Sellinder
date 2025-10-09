@@ -13,7 +13,7 @@ import axios from "axios";
 const Contact = () => {
   const [contact, setContact] = useState({
     name: "",
-    eamil: "",
+    email: "",
     message: ""
   })
   const [loading, setLoading] = useState(false)
@@ -38,7 +38,7 @@ const Contact = () => {
       toast.success(resp.data.message || "Request sent successfully!")
       setContact({
         name: "",
-        eamil: "",
+        email: "",
         message: ""
       })
     } catch (error) {
@@ -47,7 +47,7 @@ const Contact = () => {
       toast.error(msg)
       setContact({
         name: "",
-        eamil: "",
+        email: "",
         message: ""
       })
     } finally {
@@ -88,8 +88,8 @@ const Contact = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Email or Phone number
                 </label>
-                <input onChange={handleChange} value={contact.eamil}
-                  name="eamil"
+                <input onChange={handleChange} value={contact.email}
+                  name="email"
                   type="text"
                   placeholder="you@example.com or +1 555 123 4567"
                   className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
