@@ -15,7 +15,42 @@ export const AppProvider = ({ children }) => {
   const [allPlanLoading, setAllPlansLoading] = useState(false);
   const [yearly, setYearly] = useState(false);
 
-  console.log("token from the local storage", token);
+const [loading, setLoading] = useState(false);
+const [appdetails, setAppDetails] = useState([]);
+
+
+
+
+   const GetAllAPPdetails = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${url}/api/config/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      let resp = res.data.result;
+      if (resp) {
+        setAppDetails(resp);
+      }
+    } catch (error) {
+      let msg = error.response.data.message;
+      toast.error(msg || "Internal Server Error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
   // getAllPlan
 
   const handleAllPlans = async () => {
@@ -135,6 +170,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     handleAllPlans();
+    GetAllAPPdetails();
   }, []);
   // useEffect(() => {
   //     const storedToken = localStorage.getItem("token");
@@ -145,7 +181,7 @@ export const AppProvider = ({ children }) => {
 
   return (
     <PlanContext.Provider
-      value={{ allPlans, allPlanLoading, handlePayment, yearly, setYearly }}
+      value={{ allPlans, allPlanLoading, handlePayment, yearly, setYearly,appdetails }}
     >
       {children}
     </PlanContext.Provider>

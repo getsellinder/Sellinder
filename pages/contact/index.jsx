@@ -6,54 +6,54 @@ import { IoCallOutline } from "react-icons/io5";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import axios from "axios";
-
-
-
+import usePlan from "../../components/PricingContext";
+import React from "react";
 
 const Contact = () => {
+  const { appdetails } = usePlan();
   const [contact, setContact] = useState({
     name: "",
     email: "",
-    message: ""
-  })
-  const [loading, setLoading] = useState(false)
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setContact((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const handeleContactRequest = async (e) => {
-
     e.preventDefault();
 
     try {
-      setLoading(true)
-      const resp = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/contact/request/new`, {
-        ...contact,
-
-      })
-      toast.success(resp.data.message || "Request sent successfully!")
+      setLoading(true);
+      const resp = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/contact/request/new`,
+        {
+          ...contact,
+        }
+      );
+      toast.success(resp.data.message || "Request sent successfully!");
       setContact({
         name: "",
         email: "",
-        message: ""
-      })
+        message: "",
+      });
     } catch (error) {
-      let msg = error?.
-        response?.data?.message
-      toast.error(msg)
+      let msg = error?.response?.data?.message;
+      toast.error(msg);
       setContact({
         name: "",
         email: "",
-        message: ""
-      })
+        message: "",
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
   return (
     <div className="bg-white min-h-screen ">
       <Header />
@@ -74,7 +74,9 @@ const Contact = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Name
                 </label>
-                <input onChange={handleChange} value={contact.name}
+                <input
+                  onChange={handleChange}
+                  value={contact.name}
                   name="name"
                   type="text"
                   placeholder="Your name"
@@ -88,7 +90,9 @@ const Contact = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Email or Phone number
                 </label>
-                <input onChange={handleChange} value={contact.email}
+                <input
+                  onChange={handleChange}
+                  value={contact.email}
                   name="email"
                   type="text"
                   placeholder="you@example.com or +1 555 123 4567"
@@ -101,7 +105,8 @@ const Contact = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Message
                 </label>
-                <textarea onChange={handleChange}
+                <textarea
+                  onChange={handleChange}
                   value={contact.message}
                   name="message"
                   rows="4"
@@ -111,18 +116,60 @@ const Contact = () => {
               </div>
 
               {/* Button */}
-              <button onClick={handeleContactRequest}
+              <button
+                onClick={handeleContactRequest}
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition"
               >
                 {loading ? "Loading....." : "Send Message"}
-
               </button>
             </form>
           </div>
 
           {/* Right side - Info */}
-          <div className="space-y-6">
+          {appdetails.map((val, index) => (
+            <React.Fragment key={index}>
+              {val.address.map((item, key) => (
+                <div className="space-y-6" key={key}>
+                  <div className="p-4 border rounded-lg ">
+                    <div className="flex items-center gap-3 mb-3">
+                      <IoLocationOutline className="text-blue-600 text-2xl" />
+                      <span className="font-semibold text-gray-800">
+                        Address
+                      </span>
+                    </div>
+     <p className="text-gray-600">{item.company}</p>
+                    <p className="text-gray-600">{item.address}</p>
+                    <p className="text-gray-600">{item.city},{item.pincode}</p>
+                    <p className="text-gray-600">{item.state}, {item.country}</p>
+                    
+                  </div>
+
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center gap-3 mb-3">
+                      <HiOutlineMail className="text-blue-600 text-2xl" />
+                      <span className="font-semibold text-gray-800">Email</span>
+                    </div>
+
+                    <p className="text-gray-600">{item.email}</p>
+                  </div>
+
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center gap-3 mb-3">
+                      <IoCallOutline className="text-blue-600 text-2xl" />
+                      <span className="font-semibold text-gray-800">
+                        Contact
+                      </span>
+                    </div>
+
+                    <p className="text-gray-600">{item.contact}</p>
+                  </div>
+                </div>
+              ))}
+            </React.Fragment>
+          ))}
+
+          {/* <div className="space-y-6">
             <div className="p-4 border rounded-lg ">
               <div className="flex items-center gap-3 mb-3">
                 <IoLocationOutline className="text-blue-600 text-2xl" />
@@ -155,7 +202,7 @@ const Contact = () => {
 
               <p className="text-gray-600">+91 8977002747</p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

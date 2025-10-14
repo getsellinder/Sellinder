@@ -2,11 +2,13 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { Images } from "./images";
 import { usePathname } from "next/navigation";
+import usePlan from "./PricingContext";
 
 const Header = () => {
   const [active, setActive] = useState("home");
   const pathname = usePathname();
-  console.log("pathname", pathname);
+  const { appdetails } = usePlan();
+
   const links = [
     // { name: "Home", path: "/home" },
     { name: "Features", path: "/features" },
@@ -20,13 +22,26 @@ const Header = () => {
       <header className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/">
+            {appdetails.map((val, index) => (
+              <React.Fragment key={index}>
+                {val.logo.map((item, key) => (
+                  <Link href="/home" key={key}>
+                    <img
+                      src={item.Footerlogo.url}
+                      alt="Sellinder"
+                        className="h-10 w-auto"
+                    />
+                  </Link>
+                ))}
+              </React.Fragment>
+            ))}
+            {/* <Link href="/">
               <img
                 src={Images.logowhitebg}
                 alt="Sellinder"
                 className="h-10 w-auto"
               />
-            </Link>
+            </Link> */}
 
             <nav className="hidden md:flex gap-6 text-slate-600">
               {links.map((link) => (

@@ -6,12 +6,15 @@ import { IoCallOutline } from "react-icons/io5";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import axios from "axios";
+import usePlan from "../../components/PricingContext";
+import React from "react";
 
 
 
 
 const ContactSales = () => {
   let url=process.env.NEXT_PUBLIC_API_URL
+    const { appdetails } = usePlan();
   const [contact, setContact] = useState({
     name: "",
     email: "",
@@ -123,40 +126,47 @@ const ContactSales = () => {
           </div>
 
           {/* Right side - Info */}
-          <div className="space-y-6">
-            <div className="p-4 border rounded-lg ">
-              <div className="flex items-center gap-3 mb-3">
-                <IoLocationOutline className="text-blue-600 text-2xl" />
-                <span className="font-semibold text-gray-800">Address</span>
-              </div>
-
-              <p className="text-gray-600">
-                Neonflake Enterprises OPC Pvt Ltd <br />
-                303, 3rd Floor, Meridian Plaza <br />
-                Greenlands, Ameerpet <br />
-                Hyderabad, India 500016
-              </p>
-            </div>
-
-            <div className="p-4 border rounded-lg">
-              <div className="flex items-center gap-3 mb-3">
-                <HiOutlineMail className="text-blue-600 text-2xl" />
-                <span className="font-semibold text-gray-800">Email</span>
-              </div>
-
-
-              <p className="text-gray-600">hello@smellika.com</p>
-            </div>
-
-            <div className="p-4 border rounded-lg">
-              <div className="flex items-center gap-3 mb-3">
-                <IoCallOutline className="text-blue-600 text-2xl" />
-                <span className="font-semibold text-gray-800">Contact</span>
-              </div>
-
-              <p className="text-gray-600">+91 8977002747</p>
-            </div>
-          </div>
+              {appdetails.map((val, index) => (
+                     <React.Fragment key={index}>
+                       {val.address.map((item, key) => (
+                         <div className="space-y-6" key={key}>
+                           <div className="p-4 border rounded-lg ">
+                             <div className="flex items-center gap-3 mb-3">
+                               <IoLocationOutline className="text-blue-600 text-2xl" />
+                               <span className="font-semibold text-gray-800">
+                                 Address
+                               </span>
+                             </div>
+              <p className="text-gray-600">{item.company}</p>
+                             <p className="text-gray-600">{item.address}</p>
+                             <p className="text-gray-600">{item.city},{item.pincode}</p>
+                             <p className="text-gray-600">{item.state}, {item.country}</p>
+                             
+                           </div>
+         
+                           <div className="p-4 border rounded-lg">
+                             <div className="flex items-center gap-3 mb-3">
+                               <HiOutlineMail className="text-blue-600 text-2xl" />
+                               <span className="font-semibold text-gray-800">Email</span>
+                             </div>
+         
+                             <p className="text-gray-600">{item.email}</p>
+                           </div>
+         
+                           <div className="p-4 border rounded-lg">
+                             <div className="flex items-center gap-3 mb-3">
+                               <IoCallOutline className="text-blue-600 text-2xl" />
+                               <span className="font-semibold text-gray-800">
+                                 Contact
+                               </span>
+                             </div>
+         
+                             <p className="text-gray-600">{item.contact}</p>
+                           </div>
+                         </div>
+                       ))}
+                     </React.Fragment>
+                   ))}
         </div>
       </div>
 
