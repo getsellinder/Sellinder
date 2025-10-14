@@ -99,8 +99,10 @@ const [appdetails, setAppDetails] = useState([]);
 
       if (resp.data.message === "Free plan activated successfully") {
         toast.success("🎉 Free plan activated successfully!");
+        localStorage.removeItem("selectedPlan"); 
         return; // stop here, don't open Razorpay
       }
+      localStorage.removeItem("selectedPlan")
     } catch (error) {
       let msg = error?.response?.data?.message;
       console.error("Payment initiation failed:", error.message);
