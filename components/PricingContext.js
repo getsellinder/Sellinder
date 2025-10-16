@@ -15,13 +15,13 @@ export const AppProvider = ({ children }) => {
   const [allPlanLoading, setAllPlansLoading] = useState(false);
   const [yearly, setYearly] = useState(false);
 
-const [loading, setLoading] = useState(false);
-const [appdetails, setAppDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [appdetails, setAppDetails] = useState([]);
 
 
 
 
-   const GetAllAPPdetails = async () => {
+  const GetAllAPPdetails = async () => {
     try {
       setLoading(true);
       const res = await axios.get(`${url}/api/config/`, {
@@ -74,6 +74,7 @@ const [appdetails, setAppDetails] = useState([]);
     durationType,
     razorpayPaymentId,
     planAmount,
+    paymentStatus,
     userId
   ) => {
     // durationType, razorpayPaymentId, planAmount, orderId
@@ -82,6 +83,7 @@ const [appdetails, setAppDetails] = useState([]);
         durationType: durationType,
         razorpayPaymentId: razorpayPaymentId,
         planAmount: planAmount,
+        paymentStatus,
         userId: userId,
       };
       console.log("data", data);
@@ -99,7 +101,7 @@ const [appdetails, setAppDetails] = useState([]);
 
       if (resp.data.message === "Free plan activated successfully") {
         toast.success("🎉 Free plan activated successfully!");
-        localStorage.removeItem("selectedPlan"); 
+        localStorage.removeItem("selectedPlan");
         return; // stop here, don't open Razorpay
       }
       localStorage.removeItem("selectedPlan")
@@ -129,6 +131,7 @@ const [appdetails, setAppDetails] = useState([]);
         toast.success("🎉 Free plan activated successfully!");
         return; // stop here, don't open Razorpay
       }
+      console.log("payment succesfuuly after payemnt data", resp.data)
       const { key_id, amount, currency, order_id } = resp.data;
       if (!window.Razorpay) {
         console.error("Razorpay SDK not loaded");
@@ -146,6 +149,8 @@ const [appdetails, setAppDetails] = useState([]);
             durationType,
             response.razorpay_payment_id,
             amount,
+        "success",
+            // paymentStatus="success",
             userId
           );
           toast.success(
@@ -160,13 +165,28 @@ const [appdetails, setAppDetails] = useState([]);
         theme: {
           color: "#3399cc",
         },
+        modal: {
+          ondismiss: async function () {
+            await ConfirmPayment(
+              planId,
+              durationType,
+              null,
+              0,
+             "failed",
+              userId
+            );
+   
+            toast.error("❌ Payment Failed or Cancelled");
+
+          }
+        }
       };
       const razor = new window.Razorpay(options);
       razor.open();
     } catch (error) {
       let msg = error.response.data.message;
       console.error("Payment initiation failed:", error.message);
-      toast.error("Internal Server error");
+      toast.error(msg||"Internal Server error");
     }
   };
 
@@ -183,7 +203,7 @@ const [appdetails, setAppDetails] = useState([]);
 
   return (
     <PlanContext.Provider
-      value={{ allPlans, allPlanLoading, handlePayment, yearly, setYearly,appdetails }}
+      value={{ allPlans, allPlanLoading, handlePayment, yearly, setYearly, appdetails }}
     >
       {children}
     </PlanContext.Provider>
