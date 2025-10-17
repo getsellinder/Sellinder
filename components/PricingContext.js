@@ -18,9 +18,6 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [appdetails, setAppDetails] = useState([]);
 
-
-
-
   const GetAllAPPdetails = async () => {
     try {
       setLoading(true);
@@ -40,16 +37,6 @@ export const AppProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
-
-
-
-
-
-
-
-
-
 
   // getAllPlan
 
@@ -72,9 +59,13 @@ export const AppProvider = ({ children }) => {
   const ConfirmPayment = async (
     planId,
     durationType,
+
     razorpayPaymentId,
+    razorpayOrderId,
+    razorpaySignature,
+
     planAmount,
-    paymentStatus,
+        paymentStatus,
     userId
   ) => {
     // durationType, razorpayPaymentId, planAmount, orderId
@@ -84,9 +75,11 @@ export const AppProvider = ({ children }) => {
         razorpayPaymentId: razorpayPaymentId,
         planAmount: planAmount,
         paymentStatus,
-        userId: userId,
+        razorpayOrderId,
+        razorpaySignature,
+        userId: userId, 
       };
-      console.log("data", data);
+  
 
       const resp = await axios.post(
         `${url}/api/package/confirm/pyment/${planId}`,
@@ -104,7 +97,7 @@ export const AppProvider = ({ children }) => {
         localStorage.removeItem("selectedPlan");
         return; // stop here, don't open Razorpay
       }
-      localStorage.removeItem("selectedPlan")
+      localStorage.removeItem("selectedPlan");
     } catch (error) {
       let msg = error?.response?.data?.message;
       console.error("Payment initiation failed:", error.message);
@@ -131,7 +124,7 @@ export const AppProvider = ({ children }) => {
         toast.success("🎉 Free plan activated successfully!");
         return; // stop here, don't open Razorpay
       }
-      console.log("payment succesfuuly after payemnt data", resp.data)
+      console.log("payment succesfuuly after payemnt data", resp.data);
       const { key_id, amount, currency, order_id } = resp.data;
       if (!window.Razorpay) {
         console.error("Razorpay SDK not loaded");
@@ -144,13 +137,16 @@ export const AppProvider = ({ children }) => {
         description: "Plan Purchase",
         order_id,
         handler: async (response) => {
+          console.log("response", response);
           ConfirmPayment(
             planId,
             durationType,
             response.razorpay_payment_id,
+            response.razorpay_order_id,
+            response.razorpay_signature,
             amount,
-        "success",
-            // paymentStatus="success",
+            "success",
+
             userId
           );
           toast.success(
@@ -172,21 +168,20 @@ export const AppProvider = ({ children }) => {
               durationType,
               null,
               0,
-             "failed",
+              "failed",
               userId
             );
-   
-            toast.error("❌ Payment Failed or Cancelled");
 
-          }
-        }
+            toast.error("❌ Payment Failed or Cancelled");
+          },
+        },
       };
       const razor = new window.Razorpay(options);
       razor.open();
     } catch (error) {
       let msg = error.response.data.message;
       console.error("Payment initiation failed:", error.message);
-      toast.error(msg||"Internal Server error");
+      toast.error(msg || "Internal Server error");
     }
   };
 
@@ -203,7 +198,14 @@ export const AppProvider = ({ children }) => {
 
   return (
     <PlanContext.Provider
-      value={{ allPlans, allPlanLoading, handlePayment, yearly, setYearly, appdetails }}
+      value={{
+        allPlans,
+        allPlanLoading,
+        handlePayment,
+        yearly,
+        setYearly,
+        appdetails,
+      }}
     >
       {children}
     </PlanContext.Provider>
