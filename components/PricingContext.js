@@ -179,7 +179,7 @@ export const AppProvider = ({ children }) => {
       const razor = new window.Razorpay(options);
       razor.open();
     } catch (error) {
-      let msg = error.response.data.message;
+      let msg = error?.response?.data?.message;
       console.error("Payment initiation failed:", error.message);
       toast.error(msg || "Internal Server error");
     }
