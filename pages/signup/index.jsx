@@ -105,8 +105,8 @@ const SignUP = () => {
         console.warn("Could not save auth token to chrome.storage:", e);
       }
       const { planId, durationType } = selectedPlan;
-      console.log("finalUser",finalUser)
- await handlePayment(planId, durationType, finalUser)
+      console.log("finalUser", finalUser);
+      await handlePayment(planId, durationType, finalUser);
       console.log(
         "singnup success - user:",
         finalUser,
@@ -145,7 +145,7 @@ const SignUP = () => {
   //       return;
   //     }
   //          const token =data?.token
-     
+
   //     // const possibleUser =
   //     //   data?.user || data?.data?.user || data?.userData || data?.data || data;
   //     localStorage.setItem("token", token);
@@ -177,11 +177,11 @@ const SignUP = () => {
             <div className="flex-1 p-6">
               {/* Logo and Welcome Message */}
               <div className="text-center ">
-                <div className="w-20  mx-auto">
+                <div className="w-25  h-10 mx-auto">
                   <img
                     src={Images.logowhitebg}
                     alt="Sellinder Logo"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain "
                   />
                 </div>
                 <h2 className="text-lg font-semibold text-gray-900 mb-2">

@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
   const url = process.env.NEXT_PUBLIC_API_URL;
-  const { handlePayment } = usePlan();
+
 
   const router = useRouter();
   const [formData, setFormData] = useState({

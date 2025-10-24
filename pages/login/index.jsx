@@ -114,7 +114,7 @@ const Login = () => {
       <div className="min-h-screen bg-white text-slate-800">
         <Header />
         <div className="flex flex-center justify-center align-center">
-          <div className="w-[30%] p-8 bg-gray-50 rounded-xl shadow-m m-3 ">
+          <div className="w-[30%] p-8 bg-gray-50 rounded-xl shadow-m">
             {/* Header */}
             <div className="flex items-center p-4 border-b border-gray-100">
               <button
@@ -126,17 +126,17 @@ const Login = () => {
               <h1 className="text-lg font-semibold text-gray-900">Sign In</h1>
             </div>
 
-            <div className="flex-1 p-6">
+            <div className="flex-1 px-6">
               {/* Logo and Welcome Message */}
-              <div className="text-center mb-8">
-                <div className="w-20 h-20 mx-auto mb-4">
+              <div className="text-center mb-7">
+                <div className="w-25  h-10 mx-auto">
                   <img
                     src={Images.logowhitebg}
                     alt="Sellinder Logo"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain "
                   />
                 </div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                <h2 className="text-lg font-semibold text-gray-900 mb-2 mt-4">
                   Welcome Back
                 </h2>
                 <p className="text-sm text-gray-600">
@@ -144,7 +144,7 @@ const Login = () => {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-2">
                 {apiError && (
                   <div className="text-xs text-red-600 mb-2 text-center">
                     {apiError}
@@ -196,6 +196,17 @@ const Login = () => {
                   )}
                 </div>
 
+  <div className="text-sm">
+                <p className="text-sm text-gray-600 mb-6" style={{fontSize:"12px"}}>
+                Forgot Password ?{" "}
+                  <button style={{fontSize:"12px"}}
+                    onClick={() => router.push("/ForgotPassword")}
+                    className="text-orange-500 hover:text-orange-600 text-sm"
+                  >
+                   Forgot Password
+                  </button>
+                </p>
+              </div>
                 <button
                   type="submit"
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-60"
@@ -205,7 +216,7 @@ const Login = () => {
                   {isLoading ? "Signing In..." : "Sign In"}
                 </button>
               </form>
-               <div className="mt-6 text-center">
+               {/* <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
                 Forgot Password ?{" "}
                   <button
@@ -215,7 +226,7 @@ const Login = () => {
                    Forgot Password
                   </button>
                 </p>
-              </div>
+              </div> */}
 
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
