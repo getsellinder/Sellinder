@@ -242,12 +242,12 @@ const Login = () => {
 
                 <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
-                   Resent Password hear{" "}
+                   Reset Password hear{" "}
                   <button
                     onClick={() => router.push("/ResetPassword")}
                     className="text-orange-500 hover:text-orange-600 font-medium"
                   >
-                   Resent Password
+                   Reset Password
                   </button>
                 </p>
               </div>
