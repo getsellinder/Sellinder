@@ -79,6 +79,7 @@ export const AppProvider = ({ children }) => {
         razorpaySignature,
         userId: userId, 
       };
+      console.log("data.confirm",data)
   
 
       const resp = await axios.post(
@@ -164,12 +165,22 @@ export const AppProvider = ({ children }) => {
         modal: {
           ondismiss: async function () {
             await ConfirmPayment(
+              // planId,
+              // durationType,
+              // null,
+              // 0,
+              // "failed",
+              // userId
+
               planId,
-              durationType,
-              null,
-              0,
-              "failed",
-              userId
+            durationType,
+           null, // response.razorpay_payment_id,
+           null, // response.razorpay_order_id,
+           null, //response.razorpay_signature,
+            amount,
+            "failed",
+
+            userId
             );
 
             toast.error("❌ Payment Failed or Cancelled");

@@ -20,7 +20,7 @@ const SignUP = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    phone: "",
+    // phone: "",
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ const SignUP = () => {
     if (!formData.name?.trim()) newErrors.name = "Name is required";
     if (!formData.email?.trim()) newErrors.email = "Email is required";
     if (!formData.password) newErrors.password = "Password is required";
-    if (!formData.phone) newErrors.phone = "Phone is required";
+    // if (!formData.phone) newErrors.phone = "Phone is required";
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       setIsLoading(false);
@@ -51,7 +51,7 @@ const SignUP = () => {
           email: formData.email,
           password: formData.password,
           confirmPassword: formData.confirmPassword,
-          phone: formData.phone,
+          // phone: formData.phone,
         }),
       });
       const data = await res.json();
@@ -105,8 +105,8 @@ const SignUP = () => {
         console.warn("Could not save auth token to chrome.storage:", e);
       }
       const { planId, durationType } = selectedPlan;
-      console.log("finalUser",finalUser)
- await handlePayment(planId, durationType, finalUser)
+      console.log("finalUser", finalUser);
+      await handlePayment(planId, durationType, finalUser);
       console.log(
         "singnup success - user:",
         finalUser,
@@ -145,7 +145,7 @@ const SignUP = () => {
   //       return;
   //     }
   //          const token =data?.token
-     
+
   //     // const possibleUser =
   //     //   data?.user || data?.data?.user || data?.userData || data?.data || data;
   //     localStorage.setItem("token", token);
@@ -177,11 +177,11 @@ const SignUP = () => {
             <div className="flex-1 p-6">
               {/* Logo and Welcome Message */}
               <div className="text-center ">
-                <div className="w-20  mx-auto">
+                <div className="w-25  h-10 mx-auto">
                   <img
                     src={Images.logowhitebg}
                     alt="Sellinder Logo"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain "
                   />
                 </div>
                 <h2 className="text-lg font-semibold text-gray-900 mb-2">
@@ -290,7 +290,7 @@ const SignUP = () => {
                     </p>
                   )}
                 </div>
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Phone
                   </label>
@@ -310,7 +310,7 @@ const SignUP = () => {
                   {errors.email && (
                     <p className="text-xs text-red-600 mt-1">{errors.email}</p>
                   )}
-                </div>
+                </div> */}
 
                 <button
                   type="submit"
