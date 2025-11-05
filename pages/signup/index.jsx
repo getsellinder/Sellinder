@@ -290,27 +290,7 @@ const SignUP = () => {
                     </p>
                   )}
                 </div>
-                {/* <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone
-                  </label>
-                  <input
-                    type="Number"
-                    value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
-                    className={`w-full px-3 py-2 border rounded-lg text-sm ${
-                      errors.email
-                        ? "border-red-300 focus:ring-red-200"
-                        : "border-gray-300 focus:ring-orange-200"
-                    } focus:outline-none focus:ring-2`}
-                    placeholder="Enter your Phone Number"
-                  />
-                  {errors.email && (
-                    <p className="text-xs text-red-600 mt-1">{errors.email}</p>
-                  )}
-                </div> */}
+    
 
                 <button
                   type="submit"
