@@ -37,6 +37,16 @@ const PlansDashboardPage = () => {
     return expiry < now;
   };
 
+  const hasValidPlan = (plan) => {
+    if (!plan) return false;
+    // Check if plan has PlanId (indicates actual subscription)
+    if (!plan.PlanId) return false;
+    // Check if plan has invoice data
+    if (!plan.InvoiceNo) return false;
+    // Check if not expired
+    return !isPlanExpired(plan);
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return "—";
     const date = new Date(dateStr);
@@ -119,7 +129,12 @@ const PlansDashboardPage = () => {
         if (allPlansRes.ok) {
           const allPlansData = await allPlansRes.json();
           console.log("All plans response:", allPlansData);
-          setAllPlans(allPlansData?.data || allPlansData?.packages || allPlansData?.result || allPlansData || []);
+          // Extract plans array from various possible response structures
+          const plansArray = allPlansData?.getpackages || allPlansData?.data || allPlansData?.packages || allPlansData?.result || allPlansData || [];
+          setAllPlans(Array.isArray(plansArray) ? plansArray : []);
+        } else {
+          console.warn("Failed to fetch all plans, using fallback");
+          setAllPlans([]);
         }
 
       } catch (err) {
@@ -153,7 +168,7 @@ const PlansDashboardPage = () => {
             </div>
           ) : (
             <div className="space-y-8">
-              {userPlan && !isPlanExpired(userPlan) ? (
+              {hasValidPlan(userPlan) ? (
                 <>
                   {/* Current Plan Section */}
                   <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -236,10 +251,10 @@ const PlansDashboardPage = () => {
               ) : null}
 
               {/* All Plans Section - Only show if no active plan or plan expired */}
-              {(!userPlan || isPlanExpired(userPlan)) && (
+              {!hasValidPlan(userPlan) && (
                 <section>
                   <h2 className="text-xl font-semibold mb-4 text-center">
-                    {isPlanExpired(userPlan) ? "Your Plan Has Expired - Choose a New Plan" : "Choose Your Plan"}
+                    {userPlan && isPlanExpired(userPlan) ? "Your Plan Has Expired - Choose a New Plan" : "Choose Your Plan"}
                   </h2>
                 
                 {/* Billing Period Toggle */}
@@ -271,12 +286,13 @@ const PlansDashboardPage = () => {
                   {Array.isArray(allPlans) && allPlans.length > 0 ? (
                     allPlans.map((plan, index) => {
                       const isPopular = index === 2; // Making Growth plan (index 2) popular
-                      const planName = plan?.name || plan?.planName || ['Free', 'Pro', 'Growth', 'Enterprise'][index] || `Plan ${index + 1}`;
+                      const planName = plan?.Package || plan?.name || plan?.planName || ['Free', 'Pro', 'Growth', 'Enterprise'][index] || `Plan ${index + 1}`;
+                      const planType = planName.toLowerCase().replace(/\s+plan/i, '').trim(); // Extract plan type (free, pro, growth, enterprise)
                       const monthlyPrices = [0, 2999, 5199, 'Custom'];
                       const yearlyPrices = [0, 29990, 51990, 'Custom']; // Yearly prices (10 months pricing)
                       const planPrice = billingPeriod === "yearly" 
-                        ? (plan?.yearlyPrice || plan?.yearly_amount || yearlyPrices[index] || 0)
-                        : (plan?.price || plan?.amount || monthlyPrices[index] || 0);
+                        ? (plan?.Total_Yearly_Price || plan?.yearlyPrice || plan?.yearly_amount || yearlyPrices[index] || 0)
+                        : (plan?.Total_Monthly_Price || plan?.price || plan?.amount || monthlyPrices[index] || 0);
                       
                       return (
                         <div 
@@ -322,86 +338,85 @@ const PlansDashboardPage = () => {
                             </div>
 
                             {/* Features List */}
-                            <div className="space-y-3 text-left mb-6 min-h-[200px]">
-                              {planName === 'Free' && (
-                                <>
-                                  <p className="text-gray-600 text-sm">
-                                    • {billingPeriod === "yearly" ? "24 Profile / year" : "2 Profile / month"}
-                                  </p>
-                                  <p className="text-gray-600 text-sm">• 1 user</p>
-                                  <p className="text-gray-600 text-sm">• Interest Prediction</p>
-                                  <p className="text-gray-600 text-sm">• Buyer Insights</p>
-                                  <p className="text-gray-600 text-sm">• Conversation Playbook</p>
-                                  <p className="text-gray-600 text-sm">• Objection Handling</p>
-                                </>
-                              )}
-                              {planName === 'Pro' && (
-                                <>
-                                  <p className="text-gray-600 text-sm">
-                                    • {billingPeriod === "yearly" ? "240 Profile / year" : "20 Profile / month"}
-                                  </p>
-                                  <p className="text-gray-600 text-sm">• 1 user</p>
-                                  <p className="text-gray-600 text-sm">• Interest Prediction</p>
-                                  <p className="text-gray-600 text-sm">• Buyer Insights</p>
-                                  <p className="text-gray-600 text-sm">• Conversation Playbook</p>
-                                  <p className="text-gray-600 text-sm">• Objection Handling</p>
-                                </>
-                              )}
-                              {planName === 'Growth' && (
-                                <>
-                                  <p className="text-gray-600 text-sm">
-                                    • {billingPeriod === "yearly" ? "960 Profile / year" : "80 Profile / month"}
-                                  </p>
-                                  <p className="text-gray-600 text-sm">• Up to 3 users</p>
-                                  <p className="text-gray-600 text-sm">• Interest Prediction</p>
-                                  <p className="text-gray-600 text-sm">• Buyer Insights</p>
-                                  <p className="text-gray-600 text-sm">• Conversation Playbook</p>
-                                  <p className="text-gray-600 text-sm">• Objection Handling</p>
-                                </>
-                              )}
-                              {planName === 'Enterprise' && (
-                                <>
-                                  <p className="text-gray-600 text-sm">• Custom quota</p>
-                                  <p className="text-gray-600 text-sm">• Flexible users</p>
-                                  <p className="text-gray-600 text-sm">• Interest Prediction</p>
-                                  <p className="text-gray-600 text-sm">• Buyer Insights</p>
-                                  <p className="text-gray-600 text-sm">• Conversation Playbook</p>
-                                  <p className="text-gray-600 text-sm">• Objection Handling</p>
-                                  <p className="text-gray-600 text-sm">• Dedicated support</p>
-                                </>
-                              )}
-                              
-                              {/* Custom features from API if available */}
-                              {plan?.features && plan.features.map((feature, idx) => (
-                                <p key={`custom-${idx}`} className="text-gray-600 text-sm">• {feature}</p>
-                              ))}
+                            <div className="space-y-2 text-left mb-6 min-h-[180px]">
+                              {(() => {
+                                // Always use custom features that change with billing period
+                                // This ensures profile limits update correctly
+                                if (planType === 'free') {
+                                  return (
+                                    <>
+                                      <p className="text-gray-600 text-sm">
+                                        • {billingPeriod === "yearly" ? "24 Profile / year" : "2 Profile / month"}
+                                      </p>
+                                      <p className="text-gray-600 text-sm">• 1 user</p>
+                                      <p className="text-gray-600 text-sm">• Interest Prediction</p>
+                                      <p className="text-gray-600 text-sm">• Buyer Insights</p>
+                                      <p className="text-gray-600 text-sm">• Conversation Playbook</p>
+                                      <p className="text-gray-600 text-sm">• Objection Handling</p>
+                                    </>
+                                  );
+                                } else if (planType === 'pro') {
+                                  return (
+                                    <>
+                                      <p className="text-gray-600 text-sm">
+                                        • {billingPeriod === "yearly" ? "240 Profile / year" : "20 Profile / month"}
+                                      </p>
+                                      <p className="text-gray-600 text-sm">• 1 user</p>
+                                      <p className="text-gray-600 text-sm">• Interest Prediction</p>
+                                      <p className="text-gray-600 text-sm">• Buyer Insights</p>
+                                      <p className="text-gray-600 text-sm">• Conversation Playbook</p>
+                                      <p className="text-gray-600 text-sm">• Objection Handling</p>
+                                    </>
+                                  );
+                                } else if (planType === 'growth') {
+                                  return (
+                                    <>
+                                      <p className="text-gray-600 text-sm">
+                                        • {billingPeriod === "yearly" ? "960 Profile / year" : "80 Profile / month"}
+                                      </p>
+                                      <p className="text-gray-600 text-sm">• Up to 3 users</p>
+                                      <p className="text-gray-600 text-sm">• Interest Prediction</p>
+                                      <p className="text-gray-600 text-sm">• Buyer Insights</p>
+                                      <p className="text-gray-600 text-sm">• Conversation Playbook</p>
+                                      <p className="text-gray-600 text-sm">• Objection Handling</p>
+                                    </>
+                                  );
+                                } else if (planType === 'enterprise') {
+                                  return (
+                                    <>
+                                      <p className="text-gray-600 text-sm">• Custom quota</p>
+                                      <p className="text-gray-600 text-sm">• Flexible users</p>
+                                      <p className="text-gray-600 text-sm">• Interest Prediction</p>
+                                      <p className="text-gray-600 text-sm">• Buyer Insights</p>
+                                      <p className="text-gray-600 text-sm">• Conversation Playbook</p>
+                                      <p className="text-gray-600 text-sm">• Objection Handling</p>
+                                      <p className="text-gray-600 text-sm">• Dedicated support</p>
+                                    </>
+                                  );
+                                }
+                                
+                                return null;
+                              })()}
                             </div>
 
                             <button 
                               className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
-                                userPlan && plan?.id === userPlan?.id
-                                  ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                                  : planName === 'Free'
+                                planType === 'free'
+                                  ? "bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+                                  : planType === 'enterprise'
                                     ? "bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-50"
-                                    : planName === 'Enterprise'
-                                      ? "bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-50"
-                                      : "bg-orange-500 text-white hover:bg-orange-600"
+                                    : "bg-orange-500 text-white hover:bg-orange-600"
                               }`}
-                              disabled={userPlan && plan?.id === userPlan?.id}
                             >
-                              {userPlan && plan?.id === userPlan?.id 
-                                ? "Current Plan" 
-                                : planName === 'Free'
-                                  ? "Start Free"
-                                  : planName === 'Pro'
-                                    ? "Start Pro"
-                                    : planName === 'Growth'
-                                      ? "Start Growth"
-                                      : planName === 'Enterprise'
-                                        ? "Contact Sales"
-                                        : userPlan 
-                                          ? `Upgrade to ${planName}` 
-                                          : `Start ${planName}`
+                              {planType === 'free'
+                                ? "Start Free"
+                                : planType === 'pro'
+                                  ? "Start Pro"
+                                  : planType === 'growth'
+                                    ? "Start Growth"
+                                    : planType === 'enterprise'
+                                      ? "Contact Sales"
+                                      : `Start ${planName}`
                               }
                             </button>
                           </div>
