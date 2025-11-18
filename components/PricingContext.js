@@ -4,11 +4,13 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { isAutheticated } from "./isAuthticated";
+import { useRouter } from "next/router";
 
 const PlanContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const token = isAutheticated();
+  const router=useRouter()
   const url = process.env.NEXT_PUBLIC_API_URL;
   // const [token, setToken] = useState(null)
   const [allPlans, setAllPlans] = useState([]);
@@ -79,6 +81,7 @@ export const AppProvider = ({ children }) => {
         razorpaySignature,
         userId: userId, 
       };
+      console.log("data.confirm",data)
   
 
       const resp = await axios.post(
@@ -98,6 +101,7 @@ export const AppProvider = ({ children }) => {
         return; // stop here, don't open Razorpay
       }
       localStorage.removeItem("selectedPlan");
+       router.push("/dashboard")
     } catch (error) {
       let msg = error?.response?.data?.message;
       console.error("Payment initiation failed:", error.message);
@@ -105,10 +109,10 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const handlePayment = async (planId, durationType, finalUser) => {
+  const handlePayment = async (planId, durationType, userId) => {
+    console.log("plan._id,billingPeriod,userId",planId, durationType, userId)
     try {
-      const userId = finalUser?.userId;
-      console.log("userId finalUser", userId);
+     
       const resp = await axios.post(
         `${url}/api/package/purchase/${planId}`,
         { durationType: durationType, userId: userId },
@@ -130,6 +134,8 @@ export const AppProvider = ({ children }) => {
         console.error("Razorpay SDK not loaded");
         return;
       }
+      const finalUser=localStorage.getItem("user")
+      console.log("finalUser",finalUser)
       const options = {
         key: key_id,
         currency,
@@ -156,7 +162,7 @@ export const AppProvider = ({ children }) => {
         prefill: {
           name: finalUser?.name || "User",
           email: finalUser?.email || "user@example.com",
-          contact: finalUser?.phone || "9999999999",
+         
         },
         theme: {
           color: "#3399cc",
@@ -164,12 +170,22 @@ export const AppProvider = ({ children }) => {
         modal: {
           ondismiss: async function () {
             await ConfirmPayment(
+              // planId,
+              // durationType,
+              // null,
+              // 0,
+              // "failed",
+              // userId
+
               planId,
-              durationType,
-              null,
-              0,
-              "failed",
-              userId
+            durationType,
+           null, // response.razorpay_payment_id,
+           null, // response.razorpay_order_id,
+           null, //response.razorpay_signature,
+            amount,
+            "failed",
+
+            userId
             );
 
             toast.error("❌ Payment Failed or Cancelled");
@@ -178,6 +194,7 @@ export const AppProvider = ({ children }) => {
       };
       const razor = new window.Razorpay(options);
       razor.open();
+     
     } catch (error) {
       let msg = error?.response?.data?.message;
       console.error("Payment initiation failed:", error.message);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../../components/dashboard/DashboardLayout";
+import usePlan from "../../../components/PricingContext";
 
 const PlansDashboardPage = () => {
   const [userPlan, setUserPlan] = useState(null);
@@ -7,7 +8,16 @@ const PlansDashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [billingPeriod, setBillingPeriod] = useState("monthly");
+  const [userId,setUserId]=useState(null)
+  const {handlePayment}=usePlan()
+  useEffect(()=>{
+    
+  const id=localStorage.getItem("userId") 
+  setUserId(id)
+   
+  },[])
 
+  console.log("userId",userId)
   const formatPrice = (price) => {
     if (!price) return "—";
     return typeof price === "number" ? price.toLocaleString() : String(price);
@@ -27,6 +37,7 @@ const PlansDashboardPage = () => {
       null
     );
   };
+
 
   const isPlanExpired = (plan) => {
     if (!plan) return true;
@@ -147,6 +158,7 @@ const PlansDashboardPage = () => {
     fetchPlans();
   }, []);
 
+  
   return (
     <DashboardLayout>
       {() => (
@@ -399,7 +411,7 @@ const PlansDashboardPage = () => {
                               })()}
                             </div>
 
-                            <button 
+                            <button  onClick={()=>handlePayment(plan._id,billingPeriod,userId)}
                               className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
                                 planType === 'free'
                                   ? "bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-50"

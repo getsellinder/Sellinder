@@ -46,6 +46,7 @@ const Login = () => {
         }),
       });
       const data = await res.json();
+      console.log("data00000000000000000000",data)
 
       if (!res.ok) {
         setApiError(data?.message || data?.error || "Login failed");
@@ -61,7 +62,9 @@ const Login = () => {
         data?.data?.accessToken;
       const possibleUser =
         data?.user || data?.data?.user || data?.userData || data?.data || data;
+        console.log(" data?.data?.user ", data?.data?.user )
       localStorage.setItem("token", token);
+  
       // let selectedPlan = JSON.parse(localStorage.getItem("selectedPlan"));
       // if (!selectedPlan) {
       //   toast.error("No plan selected");
@@ -105,6 +108,7 @@ const Login = () => {
           JSON.stringify({
             name: finalUser?.name || "User",
             email: finalUser?.email || formData.email || "",
+       
           })
         );
       } catch (e) {
@@ -264,7 +268,7 @@ const Login = () => {
                     onClick={() => router.push("/ResetPassword")}
                     className="text-orange-500 hover:text-orange-600 font-medium"
                   >
-                   Resent Password
+                   Reset Password
                   </button>
                 </p>
               </div>
