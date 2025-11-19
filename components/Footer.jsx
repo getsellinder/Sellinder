@@ -5,6 +5,8 @@ import usePlan from "./PricingContext";
 
 const Footer = () => {
   const { appdetails } = usePlan();
+  const socialMedia = appdetails?.[0]?.socialMedia?.[0] || {};
+
 
   return (
     <footer className="mt-12 bg-slate-900 text-slate-100">
@@ -103,7 +105,7 @@ const Footer = () => {
           <ul className="text-sm text-slate-300 space-y-2">
             <li>
               <a
-                href={socialmedia.linkedin}
+                href={socialMedia.linkedin || socialmedia.linkedin}
                 target="_blank"
                 className="hover:underline"
               >
@@ -112,7 +114,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href={socialmedia.instagram}
+                href={socialMedia.instagram || socialmedia.instagram}
                 className="hover:underline"
                 target="_blank"
               >
@@ -121,7 +123,7 @@ const Footer = () => {
             </li>
             <li>
               <a
-                href={socialmedia.facebook}
+                href={socialMedia.facebook || socialmedia.facebook}
                 className="hover:underline"
                 target="_blank"
               >
@@ -130,7 +132,7 @@ const Footer = () => {
             </li>
             <li>
               <a
-                href={socialmedia.twitter}
+                href={socialMedia.twitter || socialmedia.twitter}
                 className="hover:underline"
                 target="_blank"
               >

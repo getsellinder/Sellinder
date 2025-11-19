@@ -11,6 +11,7 @@ export const isAutheticated = () => {
 
 export const signout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("userId")
 
   return true;
 };

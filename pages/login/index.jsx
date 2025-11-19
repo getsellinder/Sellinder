@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoMdLogIn } from "react-icons/io";
 import { Images } from "../../components/images";
-import Header from "../../components/Header";
+// import Header from "../../components/Header"; // commented to remove navigation on login page
 import Footer from "../../components/Footer";
 import { useRouter } from "next/router";
 import usePlan from "../../components/PricingContext";
@@ -46,6 +46,7 @@ const Login = () => {
         }),
       });
       const data = await res.json();
+      console.log("data00000000000000000000",data)
 
       if (!res.ok) {
         setApiError(data?.message || data?.error || "Login failed");
@@ -61,13 +62,15 @@ const Login = () => {
         data?.data?.accessToken;
       const possibleUser =
         data?.user || data?.data?.user || data?.userData || data?.data || data;
+        console.log(" data?.data?.user ", data?.data?.user )
       localStorage.setItem("token", token);
-      let selectedPlan = JSON.parse(localStorage.getItem("selectedPlan"));
-      if (!selectedPlan) {
-        toast.error("No plan selected");
-          router.push("/pricing");
-        return;
-      }
+  
+      // let selectedPlan = JSON.parse(localStorage.getItem("selectedPlan"));
+      // if (!selectedPlan) {
+      //   toast.error("No plan selected");
+      //   router.push("/pricing");
+      //   return;
+      // }
 
       let finalUser = null;
       if (
@@ -95,11 +98,26 @@ const Login = () => {
         // ignore storage errors in extension environment
         console.warn("Could not save auth token to chrome.storage:", e);
       }
-      const { planId, durationType } = selectedPlan;
-      await handlePayment(planId, durationType, finalUser);
+  // const { planId, durationType } = selectedPlan;
+  // await handlePayment(planId, durationType, finalUser);
 
-      console.log("Login success - user:", finalUser, "token:", Boolean(token));
-      router.push("/pricing");
+      // Persist minimal user details locally for dashboard display
+      try {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: finalUser?.name || "User",
+            email: finalUser?.email || formData.email || "",
+       
+          })
+        );
+      } catch (e) {
+        console.warn("Could not save user info to localStorage:", e);
+      }
+
+  console.log("Login success - user:", finalUser, "token:", Boolean(token));
+  // router.push("/pricing"); // commented as per requirement to not remove existing navigation flow
+  router.push("/dashboard");
 
       // onLogin(finalUser);
       // onNavigate('dashboard');
@@ -112,17 +130,20 @@ const Login = () => {
   return (
     <>
       <div className="min-h-screen bg-white text-slate-800">
-        <Header />
+        {/** <Header /> commented to remove navigation on login page **/}
         <div className="flex flex-center justify-center align-center">
           <div className="w-[30%] p-8 bg-gray-50 rounded-xl shadow-m">
             {/* Header */}
             <div className="flex items-center p-4 border-b border-gray-100">
+              {/** Back navigation removed as requested **/}
+              {/**
               <button
                 onClick={() => router.push("/pricing")}
                 className="mr-3 p-1 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <FaArrowLeft className="w-5 h-5 text-gray-600" />
               </button>
+              **/}
               <h1 className="text-lg font-semibold text-gray-900">Sign In</h1>
             </div>
 
@@ -199,7 +220,7 @@ const Login = () => {
   <div className="text-sm">
                 <p className="text-sm text-gray-600 mb-6" style={{fontSize:"12px"}}>
                 Forgot Password ?{" "}
-                  <button style={{fontSize:"12px"}}
+                  <button type="button" style={{fontSize:"12px"}}
                     onClick={() => router.push("/ForgotPassword")}
                     className="text-orange-500 hover:text-orange-600 text-sm"
                   >
@@ -231,7 +252,7 @@ const Login = () => {
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
                   Don't have an account?{" "}
-                  <button
+                  <button type="button"
                     onClick={() => router.push("/signup")}
                     className="text-orange-500 hover:text-orange-600 font-medium"
                   >
@@ -242,8 +263,8 @@ const Login = () => {
 
                 <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
-                   Reset Password hear{" "}
-                  <button
+                   Resent Password hear{" "}
+                  <button type="button"
                     onClick={() => router.push("/ResetPassword")}
                     className="text-orange-500 hover:text-orange-600 font-medium"
                   >
