@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FiLogOut, FiHome, FiCreditCard, FiClock, FiLayers, FiHelpCircle } from "react-icons/fi";
+import { FiLogOut, FiHome, FiCreditCard, FiClock, FiLayers, FiHelpCircle ,cilCommentBubble} from "react-icons/fi";
+import { LuTickets } from "react-icons/lu";
 import { Images } from "../images";
 import { isAutheticated, signout } from "../isAuthticated";
 
@@ -10,6 +11,7 @@ const navItems = [
   { label: "History", href: "/dashboard/history", icon: FiClock },
   { label: "Billing", href: "/dashboard/billing", icon: FiCreditCard },
   { label: "Plans", href: "/dashboard/plans", icon: FiLayers },
+    { label: "Ticketes", href: "/dashboard/tickets", icon: LuTickets },
   { label: "Help", href: "/dashboard/help", icon: FiHelpCircle }
 ];
 
