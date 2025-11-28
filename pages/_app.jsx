@@ -2,6 +2,7 @@ import { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
 import { AppProvider } from "../components/PricingContext";
 import { useEffect } from "react";
+import { TicketProvider } from "../components/SupportContext";
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {
@@ -15,9 +16,11 @@ export default function App({ Component, pageProps }) {
   }, []);
   return (
     <>
+    <TicketProvider>
       <AppProvider>
         <Component {...pageProps} />
       </AppProvider>
+      </TicketProvider>
       <Toaster position="top-center" reverseOrder={false} />
     </>
   );
