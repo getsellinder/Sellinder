@@ -98,6 +98,7 @@ export const TicketProvider = ({ children }) => {
     }
   };
   useEffect(() => {
+
     let userId = localStorage.getItem("userId");
     handleAllTickets(1, PageLimit, searchInput, status,userId);
     setuserId(userId);

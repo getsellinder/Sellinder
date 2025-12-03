@@ -72,6 +72,7 @@ const SignUP = () => {
         data?.user || data?.data?.user || data?.userData || data?.data || data;
       localStorage.setItem("token", token);
       let selectedPlan = JSON.parse(localStorage.getItem("selectedPlan"));
+        localStorage.setItem("userId",data?.data?.user._id || "")
 
       if (!selectedPlan) {
         toast.error("No plan selected");

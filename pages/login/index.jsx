@@ -111,8 +111,9 @@ const Login = () => {
        
           })
         );
+        localStorage.setItem("userId",finalUser?._id || "")
       } catch (e) {
-        console.warn("Could not save user info to localStorage:", e);
+        console.log("Could not save user info to localStorage:", e);
       }
 
   console.log("Login success - user:", finalUser, "token:", Boolean(token));

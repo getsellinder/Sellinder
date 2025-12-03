@@ -22,13 +22,17 @@ export default function TicketDetails() {
 
   console.log("userParams Id", id);
 
+
+
   let messsage = allmessages?.messages;
+    console.log("messsage",messsage)
   const receiverId = allmessages?.userId?._id;
   let ticketId = allmessages?._id;
 
+
   const handleMessages = async (id) => {
     const data = {
-      receiverId: receiverId,
+      // receiverId: receiverId,
       message: sentMessage,
     };
     try {
@@ -66,6 +70,14 @@ export default function TicketDetails() {
             </h2>
 
             <div className="space-y-2 text-sm">
+               <p>
+                <span className="font-semibold">Ticket Id:</span>{" "}
+                {allmessages?.ticketId}
+              </p>
+              <p>
+                <span className="font-semibold">Created By:</span>{" "}
+                {allmessages?.userId?.name}
+              </p>
               <p>
                 <span className="font-semibold">Title:</span>{" "}
                 {allmessages?.subject}
@@ -117,8 +129,11 @@ export default function TicketDetails() {
                 </div>
               ) : (
                 messsage?.map((val, index) => {
-                  const isSender =  String(val?.senderId?._id) === String(userId);
-                  console.log("isSender",      String(val?.senderId?._id) === String(userId));
+                  // console.log("value",val)
+                  const isSender = String(val?.senderId?._id) === String(userId);
+                  // console.log("userId",userId);
+                  // console.log("senderId",val?.senderId?._id);
+               
 
                   return (
                     <div

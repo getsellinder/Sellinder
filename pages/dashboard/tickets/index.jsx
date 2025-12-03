@@ -25,8 +25,7 @@ export default function TicketsPage() {
     handleAllTickets(1, PageLimit, searchInput, status, userId);
   }, [userId]);
   let tickets = allticketes?.data;
-  console.log("tickets", tickets);
-   console.log("userId", userId);
+ 
 
   return (
     <DashboardLayout>
