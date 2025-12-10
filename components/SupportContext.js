@@ -31,9 +31,17 @@ export const TicketProvider = ({ children }) => {
     ticketStatus = status,
     userId
   ) => {
+    // ensure we have a userId before calling server
+    const effectiveUserId = userId || (typeof window !== 'undefined' ? localStorage.getItem('userId') : null);
+    if (!effectiveUserId) {
+      setErrorMessage("User not signed in");
+      return;
+    }
+
     try {
       setLoading(true);
-      let resp = await axios.get(`${url}/api/support/userticket/${userId}`, {
+      setErrorMessage("");
+      const resp = await axios.get(`${url}/api/support/userticket/${effectiveUserId}`, {
         params: {
           page,
           limit,
@@ -44,17 +52,20 @@ export const TicketProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      const result = resp.data;
-      console.log("result",result)
-  
 
+      const result = resp?.data;
+      console.log("result", result);
       setAllTicketes(result);
     } catch (error) {
-      let message = error.response.data.message;
+      const message = error?.response?.data?.message || error?.message || "Internal Server Error";
       setErrorMessage(message);
+      try {
+        toast.error(message);
+      } catch (e) {
+        // ignore toast errors in contexts where toast may not be available
+      }
     } finally {
       setLoading(false);
-      setErrorMessage("");
     }
   };
   const handleViewTicketMessages = async (id) => {
@@ -69,9 +80,10 @@ export const TicketProvider = ({ children }) => {
       const result = resp.data;
       setAllmessage(result);
     } catch (error) {
-      let message = error.response.data.message;
+      const message = error?.response?.data?.message || error?.message || "Internal Server Error";
       console.log("handleViewTicketMessages.message", message);
       console.log("handleViewTicketMessages.error", error);
+      try { toast.error(message); } catch (e) {}
     } finally {
       setLoading(false);
     }
@@ -89,10 +101,10 @@ export const TicketProvider = ({ children }) => {
       toast.success(result || "Ticket Deleted Successfully");
       handleAllTickets(1, PageLimit, searchInput, status,userId);
     } catch (error) {
-        
-      let message = error?.response?.data?.message;
+      const message = error?.response?.data?.message || error?.message || "Internal Server Error";
       console.log("handleViewTicketDelete.message", message);
       console.log("handleViewTicketDelete.error", error);
+      try { toast.error(message); } catch (e) {}
     } finally {
       setDelLoading(null);
     }

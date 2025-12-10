@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import DashboardLayout from "../../../../components/dashboard/DashboardLayout";
+import usePlan from "../../../../components/PricingContext";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -29,6 +30,7 @@ const InvoiceViewerPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [invoice, setInvoice] = useState(null);
+  const { appdetails } = usePlan();
 
   const receiptUrl = useMemo(() => {
     const raw = Array.isArray(url) ? url[0] : url;
@@ -110,22 +112,58 @@ const InvoiceViewerPage = () => {
           ) : (
             <div className="space-y-8">
               {invoice && (
-                <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-                  {/* Header */}
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
-                    <div className="space-y-1">
-                      <div>
-                        <p className="text-xs uppercase tracking-wide text-slate-500">Invoice</p>
-                        <p className="text-lg font-semibold text-slate-800">{invoice?.InvoiceNo || invoiceId}</p>
+                    <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+                      {/* Header (logo + address on left, invoice meta on right) */}
+                      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+                        <div className="w-full md:w-2/3 bg-[#dbeefb] p-4 rounded">
+                          <div className="flex items-center gap-4">
+                            {/* Logos */}
+                            <div className="flex items-center">
+                              {Array.isArray(appdetails) && appdetails.length > 0 ? (
+                                appdetails.map((item, i) => (
+                                  <React.Fragment key={i}>
+                                    {(item.logo || []).map((lg, li) => (
+                                      <img
+                                        key={li}
+                                        src={lg?.Footerlogo?.url || lg?.url}
+                                        alt="logo"
+                                        className="h-16 object-contain"
+                                      />
+                                    ))}
+                                  </React.Fragment>
+                                ))
+                              ) : (
+                                <div className="text-sm text-slate-600">Sellinder</div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Address lines */}
+                          <div className="mt-3 text-sm text-slate-700">
+                            {Array.isArray(appdetails) && appdetails.length > 0 && appdetails.map((item, idx) => (
+                              <div key={idx}>
+                                {(item.address || []).map((addr, aidx) => (
+                                  <div key={aidx} className="mb-1">
+                                    <div className="font-semibold">{addr?.company}</div>
+                                    <div>{addr?.address}</div>
+                                    <div>{addr?.city}</div>
+                                    <div>{addr?.state} {addr?.country} {addr?.pincode}</div>
+                                    <div>GST Number : {addr?.gstNumber || '—'}</div>
+                                  </div>
+                                ))}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="w-full md:w-1/3 text-right p-2">
+                          <h2 className="text-3xl font-bold">Invoice</h2>
+                          <div className="text-sm text-slate-600 mt-2">
+                            <div><strong>Invoice </strong> {invoice?.InvoiceNo || invoiceId}</div>
+                            <div><strong>Invoice Date</strong> {invoice?.createdAt ? String(invoice.createdAt).split('T')[0] : formatDisplayDate(invoice?.plan_start_date)}</div>
+                          </div>
+                        </div>
                       </div>
-                      <p className="text-sm text-slate-600">Status: <span className="font-medium capitalize">{invoice?.status || invoice?.invoice_status || '—'}</span></p>
-                    </div>
-                    <div className="text-sm text-slate-600 space-y-1">
-                      <p><span className="text-slate-500">Issued:</span> {invoice?.createdAt || formatDisplayDate(invoice?.plan_start_date)}</p>
-                      <p><span className="text-slate-500">Plan Start:</span> {formatDisplayDate(invoice?.plan_start_date)}</p>
-                      <p><span className="text-slate-500">Plan End:</span> {formatDisplayDate(invoice?.plan_expiry_date)}</p>
-                    </div>
-                  </div>
 
                   {/* Parties */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 text-sm">
@@ -207,6 +245,23 @@ const InvoiceViewerPage = () => {
                   <div className="mt-8 text-xs text-slate-500">This invoice was generated from subscription billing data. Keep this for your records.</div>
                 </div>
               )}
+
+              {/* Razorpay Details panel (matches the provided layout) */}
+              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+                <div className="text-center text-sm font-semibold text-slate-600">Razorpay Details</div>
+
+                {[
+                  { label: "Transaction ID", value: invoice?.TransactionId },
+                  { label: "Razorpay Signature", value: invoice?.RazorpaySignature },
+                  { label: "Razorpay Order ID", value: invoice?.RazorpayOrderId },
+                  { label: "Razorpay Order Time", value: invoice?.razorypayTime || invoice?.razorpayTime }
+                ].map((item, idx) => (
+                  <div key={idx} className={`flex justify-between py-3 ${idx !== 3 ? 'border-b border-gray-100' : ''}`}>
+                    <div className="text-sm text-slate-600">{item.label}</div>
+                    <div className="text-sm text-slate-800 text-right break-words max-w-[60%]">{item.value || '—'}</div>
+                  </div>
+                ))}
+              </div>
 
               {effectiveReceiptUrl && (
                 <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4">

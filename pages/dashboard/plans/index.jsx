@@ -262,11 +262,14 @@ const PlansDashboardPage = () => {
                 </>
               ) : null}
 
-              {/* All Plans Section - Only show if no active plan or plan expired */}
-              {!hasValidPlan(userPlan) && (
-                <section>
+              {/* All Plans Section - always show below current plan */}
+              <section>
                   <h2 className="text-xl font-semibold mb-4 text-center">
-                    {userPlan && isPlanExpired(userPlan) ? "Your Plan Has Expired - Choose a New Plan" : "Choose Your Plan"}
+                    {!hasValidPlan(userPlan)
+                      ? (userPlan && isPlanExpired(userPlan)
+                          ? "Your Plan Has Expired - Choose a New Plan"
+                          : "Choose Your Plan")
+                      : "All Plans"}
                   </h2>
                 
                 {/* Billing Period Toggle */}
@@ -552,7 +555,6 @@ const PlansDashboardPage = () => {
                   )}
                 </div>
               </section>
-              )}
             </div>
           )}
         </div>

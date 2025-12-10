@@ -237,7 +237,8 @@ const normalizeBillingPayload = (payload) => {
 					usageLimit ? ` of ${formatNumber(usageLimit)}` : ""
 				}`
 				: usage?.note || "",
-		paymentMethodLabel: paymentLabel,
+		// Show Razorpay as the common payment method label for all users
+		paymentMethodLabel: "Razorpay",
 		paymentMethodNote: mergedSource?.paymentMethodNote || payment?.note || "",
 		invoices: normalizeInvoices(
 			mergedSource?.invoices ||
@@ -325,90 +326,91 @@ const BillingDashboardPage = () => {
 						</div>
 					)}
 
-					{isLoading && (
-						<div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm text-sm text-slate-600 flex items-center gap-2">
-							<span className="inline-block h-3 w-3 rounded-full bg-orange-500 animate-pulse" />
-							Fetching latest billing details...
+					{isLoading ? (
+						<div className="flex justify-center items-center py-12">
+							<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
 						</div>
-					)}
+					) : (
+						<>
+							<section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+								<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+									<p className="text-xs uppercase text-slate-500">Current Plan</p>
+									<p className="text-lg font-semibold text-slate-800 mt-2">{billing.currentPlanName}</p>
+								</div>
+								<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+									<p className="text-xs uppercase text-slate-500">Billing Period</p>
+									<p className="text-lg font-semibold text-slate-800 mt-2">{billing.billingPeriod}</p>
+									<p className="text-sm text-slate-600 mt-1">Renews {billing.currentPlanRenewsOn}</p>
+								</div>
+								<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+									<p className="text-xs uppercase text-slate-500">Monthly or Yearly Spending</p>
+									<p className="text-lg font-semibold text-slate-800 mt-2">{stripLeadingDollar(billing.monthlySpendAmount)}</p>
+									<p className="text-sm text-slate-600 mt-1">{billing.monthlySpendNote || ""}</p>
+								</div>
+								<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+									<p className="text-xs uppercase text-slate-500">Usage Credits</p>
+									<p className="text-lg font-semibold text-slate-800 mt-2">{billing.usageCreditsTotal}</p>
+									<p className="text-sm text-slate-600 mt-1">{billing.usageCreditsRemainingText || "—"}</p>
+								</div>
+								<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+									<p className="text-xs uppercase text-slate-500">Payment Method</p>
+									<p className="text-lg font-semibold text-slate-800 mt-2">{billing.paymentMethodLabel}</p>
+									{billing.paymentMethodNote && <p className="text-sm text-slate-600 mt-1">{billing.paymentMethodNote}</p>}
+								</div>
+							</section>
 
-					<section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-						<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-							<p className="text-xs uppercase text-slate-500">Current Plan</p>
-							<p className="text-lg font-semibold text-slate-800 mt-2">{billing.currentPlanName}</p>
-						</div>
-						<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-							<p className="text-xs uppercase text-slate-500">Billing Period</p>
-							<p className="text-lg font-semibold text-slate-800 mt-2">{billing.billingPeriod}</p>
-							<p className="text-sm text-slate-600 mt-1">Renews {billing.currentPlanRenewsOn}</p>
-						</div>
-						<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-							<p className="text-xs uppercase text-slate-500">Monthly or Yearly Spending</p>
-							<p className="text-lg font-semibold text-slate-800 mt-2">{stripLeadingDollar(billing.monthlySpendAmount)}</p>
-							<p className="text-sm text-slate-600 mt-1">{billing.monthlySpendNote || ""}</p>
-						</div>
-						<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-							<p className="text-xs uppercase text-slate-500">Usage Credits</p>
-							<p className="text-lg font-semibold text-slate-800 mt-2">{billing.usageCreditsTotal}</p>
-							<p className="text-sm text-slate-600 mt-1">{billing.usageCreditsRemainingText || "—"}</p>
-						</div>
-						<div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-							<p className="text-xs uppercase text-slate-500">Payment Method</p>
-							<p className="text-lg font-semibold text-slate-800 mt-2">{billing.paymentMethodLabel}</p>
-							{billing.paymentMethodNote && <p className="text-sm text-slate-600 mt-1">{billing.paymentMethodNote}</p>}
-						</div>
-					</section>
-
-					<section className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-						<div className="flex items-center justify-between mb-4">
-							<h2 className="text-lg font-semibold">Invoice History</h2>
-						</div>
-						<div className="overflow-x-auto">
-							<table className="min-w-full text-left text-sm">
-								<thead>
-									<tr className="text-slate-500 uppercase text-xs tracking-wide border-b border-gray-200">
-										<th className="py-3 pr-4">Invoice</th>
-										<th className="py-3 pr-4">Date</th>
-										<th className="py-3 pr-4">Amount</th>
-										<th className="py-3 pr-4">Status</th>
-										<th className="py-3 pr-4">Receipt</th>
-									</tr>
-								</thead>
-								<tbody className="divide-y divide-gray-100 text-slate-700">
-									{billing.invoices.length === 0 ? (
-										<tr>
-											<td colSpan={5} className="py-6 text-center text-slate-500">
-												No invoices available yet.
-											</td>
-										</tr>
-									) : (
-										billing.invoices.map((invoice) => (
-											<tr key={invoice.id}>
-												<td className="py-3 pr-4 font-medium">{invoice.id}</td>
-												<td className="py-3 pr-4">{invoice.date}</td>
-												<td className="py-3 pr-4">{invoice.amount}</td>
-												<td className="py-3 pr-4">
-													<span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
-														{invoice.status}
-													</span>
-												</td>
-												<td className="py-3 pr-4">
-													<a
-														href={`/dashboard/billing/invoice/${invoice.id}`}
-														target="_blank"
-														rel="noopener noreferrer"
-														className="text-sm font-medium text-sky-600 hover:underline"
-													>
-														View
-													</a>
-												</td>
+							<section className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+								<div className="flex items-center justify-between mb-4">
+									<h2 className="text-lg font-semibold">Invoice History</h2>
+								</div>
+								<div className="overflow-x-auto">
+									<table className="min-w-full text-left text-sm">
+										<thead>
+											<tr className="text-slate-500 uppercase text-xs tracking-wide border-b border-gray-200">
+												<th className="py-3 pr-4">Invoice</th>
+												<th className="py-3 pr-4">Date</th>
+												<th className="py-3 pr-4">Amount</th>
+												<th className="py-3 pr-4">Status</th>
+												<th className="py-3 pr-4">Receipt</th>
 											</tr>
-										))
-									)}
-								</tbody>
-							</table>
-						</div>
-					</section>
+										</thead>
+										<tbody className="divide-y divide-gray-100 text-slate-700">
+											{billing.invoices.length === 0 ? (
+												<tr>
+													<td colSpan={5} className="py-6 text-center text-slate-500">
+														No invoices available yet.
+													</td>
+												</tr>
+											) : (
+												billing.invoices.map((invoice) => (
+													<tr key={invoice.id}>
+														<td className="py-3 pr-4 font-medium">{invoice.id}</td>
+														<td className="py-3 pr-4">{invoice.date}</td>
+														<td className="py-3 pr-4">{invoice.amount}</td>
+														<td className="py-3 pr-4">
+															<span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+																{invoice.status}
+															</span>
+														</td>
+														<td className="py-3 pr-4">
+															<a
+																href={`/dashboard/billing/invoice/${invoice.id}`}
+																target="_blank"
+																rel="noopener noreferrer"
+																className="text-sm font-medium text-sky-600 hover:underline"
+															>
+																View
+															</a>
+														</td>
+													</tr>
+												))
+											)}
+										</tbody>
+									</table>
+								</div>
+							</section>
+						</>
+					)}
 				</div>
 			)}
 		</DashboardLayout>

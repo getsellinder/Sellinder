@@ -11,8 +11,7 @@ const navItems = [
   { label: "History", href: "/dashboard/history", icon: FiClock },
   { label: "Billing", href: "/dashboard/billing", icon: FiCreditCard },
   { label: "Plans", href: "/dashboard/plans", icon: FiLayers },
-    { label: "Ticketes", href: "/dashboard/tickets", icon: LuTickets },
-  { label: "Help", href: "/dashboard/help", icon: FiHelpCircle }
+    { label: "Tickets", href: "/dashboard/tickets", icon: LuTickets }
 ];
 
 const SidebarItem = ({ label, href, Icon, collapsed, active }) => {

@@ -43,7 +43,7 @@ export default function TicketsPage() {
 </div> */}
 
         {/* Filters Row */}
-        <div className="flex flex-wrap gap-4 mb-6 ">
+        <div className="flex flex-wrap gap-4 mb-6 items-center">
           <input
             value={searchInput}
             onChange={(e) => {
@@ -53,7 +53,7 @@ export default function TicketsPage() {
             }}
             type="text"
             placeholder="Search tickets..."
-            className="bg-[#1a1c24] border border-gray-700 text-white p-3 rounded-lg w-64 outline-none focus:border-blue-500"
+            className="bg-white border border-gray-200 text-slate-700 p-3 rounded-lg w-64 outline-none shadow-sm focus:ring-2 focus:ring-sky-200"
           />
 
           {/* <select className="bg-[#1a1c24] border border-gray-700 p-3 rounded-lg text-white w-48 outline-none">
@@ -69,7 +69,7 @@ export default function TicketsPage() {
           </select> */}
 
           <select
-            className="bg-[#1a1c24] border border-gray-700 p-3 rounded-lg text-white w-48 outline-none"
+            className="bg-white border border-gray-200 p-3 rounded-lg text-slate-700 w-48 outline-none shadow-sm focus:ring-2 focus:ring-sky-200"
             value={status}
             onChange={(e) => {
               let val = e.target.value;
@@ -85,75 +85,74 @@ export default function TicketsPage() {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto text-black">
-          <table className="min-w-full border-collapse  rounded-lg overflow-hidden">
-            <thead className="bg-[#1b1e27] text-gray-300">
-              <tr>
-                <th className="px-4 py-3 text-left"></th>
+        <div className="overflow-x-auto text-slate-800">
+          <div className="bg-white shadow-sm rounded-lg overflow-hidden">
+            <table className="min-w-full border-collapse">
+              <thead className="bg-slate-50 text-slate-700">
+                <tr>
+                  <th className="px-4 py-3 text-left"></th>
 
-                <th className="px-4 py-3 text-left">Created At</th>
-                <th className="px-4 py-3 text-left">Ticket Id</th>
-                <th className="px-4 py-3 text-left">Subject</th>
-                <th className="px-4 py-3 text-left">Priority</th>
-                <th className="px-4 py-3 text-left">Category</th>
+                  <th className="px-4 py-3 text-left">Created At</th>
+                  <th className="px-4 py-3 text-left">Ticket Id</th>
+                  <th className="px-4 py-3 text-left">Subject</th>
+                  <th className="px-4 py-3 text-left">Priority</th>
+                  <th className="px-4 py-3 text-left">Category</th>
 
-                <th className="px-4 py-3 text-left">Resolved By</th>
-                <th className="px-4 py-3 text-left">Status</th>
-                <th className="px-4 py-3 text-left">Messages</th>
-              </tr>
-            </thead>
+                  <th className="px-4 py-3 text-left">Resolved By</th>
+                  <th className="px-4 py-3 text-left">Status</th>
+                  <th className="px-4 py-3 text-left">Messages</th>
+                </tr>
+              </thead>
 
             <tbody>
               {loading ? (
                 <tr>
-                  <td
-                    colSpan={8}
-                    style={{ height: "150px", textAlign: "center" }}
-                  >
-                    <span>Loading.....</span>
+                  <td colSpan={9} className="h-36 text-center text-slate-500">
+                    Loading.....
                   </td>
                 </tr>
               ) : errorMessage ? (
                 <tr>
-                  <td
-                    colSpan={8}
-                    style={{ height: "150px", textAlign: "center" }}
-                  >
-                    <span>{errorMessage}</span>
+                  <td colSpan={9} className="h-36 text-center text-red-600">
+                    {errorMessage}
                   </td>
                 </tr>
               ) : tickets?.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={8}
-                    style={{ height: "150px", textAlign: "center" }}
-                  >
-                    <span>No Tickets Found</span>
+                  <td colSpan={9} className="h-36 text-center text-slate-500">
+                    No Tickets Found
                   </td>
                 </tr>
               ) : (
-                tickets?.map((t) => (
-                  <tr key={t._id} className="border-b border-gray-700">
-                    <td className="px-4 py-3">{t.id}</td>
-                    <td className="px-4 py-3">{t.createdAt}</td>
-                    <td className="px-4 py-3">{t.ticketId}</td>
-                    <td className="px-4 py-3">{t.subject}</td>
-                    <td className="px-4 py-3">{t.priority}</td>
-                    <td className="px-4 py-3">{t.category}</td>
-                    <td className="px-4 py-3">{t.resolvedAt || "-"}</td>
-                    <td className="px-4 py-3">{t.status}</td>
+                tickets?.map((t, idx) => (
+                  <tr key={t._id} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-sky-50 border-b border-gray-100`}> 
+                    <td className="px-4 py-3 text-sm text-slate-500">{idx + 1}</td>
+                    <td className="px-4 py-3 text-sm text-slate-700">{t.createdAt}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-slate-800">{t.ticketId}</td>
+                    <td className="px-4 py-3 text-sm text-slate-700">{t.subject}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${t.priority === 'High' ? 'bg-red-100 text-red-700' : t.priority === 'Medium' ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
+                        {t.priority || 'Normal'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-slate-700">{t.category}</td>
+                    <td className="px-4 py-3 text-sm text-slate-700">{t.resolvedAt || '-'}</td>
+                    <td className="px-4 py-3">
+                      {/* Status badge */}
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${t.status === 'OPEN' ? 'bg-green-100 text-green-800' : t.status === 'IN_PROGRESS' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}`}>
+                        {t.status || '—'}
+                      </span>
+                    </td>
                     <td className="px-4 py-3 flex gap-3">
                       <button
-                        onClick={() =>
-                          router.push(`/dashboard/message/${t._id}`)
-                        }
-                        className="w-32 bg-blue-500 text-white px-4 py-2 rounded-lg"
+                        onClick={() => router.push(`/dashboard/message/${t._id}`)}
+                        className="px-4 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition text-sm"
                       >
                         View
                       </button>
                       <button
                         onClick={() => handleViewTicketDelete(t._id)}
-                        className="w-32 bg-red-500 text-white px-4 py-2 rounded-lg"
+                        className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition text-sm"
                       >
                         {delloading === t._id ? "loading..." : "Delete"}
                       </button>
@@ -163,6 +162,7 @@ export default function TicketsPage() {
               )}
             </tbody>
           </table>
+          </div>
           {allticketes?.totalItems === 4 && (
             <div className="flex items-center justify-center space-x-2 mt-6">
               {/* PREV BUTTON */}
