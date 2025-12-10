@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
 import DashboardLayout from "../../../components/dashboard/DashboardLayout";
 import { useTicket } from "../../../components/SupportContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { isAutheticated } from "../../../components/isAuthticated";
 
 export default function TicketsPage() {
   const router = useRouter();
@@ -21,11 +24,54 @@ export default function TicketsPage() {
     setCurrentPage,
   } = useTicket();
 
+  // Create ticket modal state
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    subject: "",
+    description: "",
+    category: "",
+    priority: ""
+  });
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCreateTicket = async (e) => {
+    e.preventDefault();
+    if (!formData.subject || !formData.description || !formData.category || !formData.priority) {
+      toast.error("Please fill out all fields");
+      return;
+    }
+    const url = process.env.NEXT_PUBLIC_API_URL;
+    const token = isAutheticated();
+    const effectiveUserId = userId || (typeof window !== "undefined" ? localStorage.getItem("userId") : null);
+
+    try {
+      setCreateLoading(true);
+      await axios.post(
+        `${url}/api/support/create`,
+        { ...formData, userId: effectiveUserId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      toast.success("Ticket created successfully");
+      setShowCreateModal(false);
+      setFormData({ subject: "", description: "", category: "", priority: "" });
+      handleAllTickets(1, PageLimit, searchInput, status, effectiveUserId);
+    } catch (error) {
+      const msg = error?.response?.data?.message || error?.message || "Failed to create ticket";
+      toast.error(msg);
+    } finally {
+      setCreateLoading(false);
+    }
+  };
+
   useEffect(() => {
     handleAllTickets(1, PageLimit, searchInput, status, userId);
   }, [userId]);
   let tickets = allticketes?.data;
- 
 
   return (
     <DashboardLayout>
@@ -35,12 +81,97 @@ export default function TicketsPage() {
         <p className="text-gray-400 mb-6">
           Log, track, and resolve issues reported by tenant admins.
         </p>
-        {/* 
-<div className="flex justify-end w-full">
-  <button className="flex items-center gap-2 px-5 py-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition">
-    🎫 Create Ticket
-  </button>
-</div> */}
+
+        {/* Create Ticket Button */}
+        <div className="flex justify-end w-full mb-4">
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="flex items-center gap-2 px-5 py-2 rounded-md bg-green-500 text-white hover:bg-green-600 transition"
+          >
+            🎫 Create New Ticket
+          </button>
+        </div>
+
+        {/* Create Ticket Modal */}
+        {showCreateModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-xl"
+              >
+                ✕
+              </button>
+              <h2 className="text-xl font-semibold mb-4 text-slate-800">Create Ticket</h2>
+              <form onSubmit={handleCreateTicket} className="space-y-4">
+                {/* Subject */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Subject</label>
+                  <input
+                    type="text"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleFormChange}
+                    placeholder="Enter subject"
+                    required
+                    className="w-full border border-gray-300 rounded-md p-2 outline-none focus:ring-2 focus:ring-green-200"
+                  />
+                </div>
+                {/* Description */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleFormChange}
+                    placeholder="Enter description"
+                    required
+                    rows={3}
+                    className="w-full border border-gray-300 rounded-md p-2 outline-none focus:ring-2 focus:ring-green-200 resize-y"
+                  />
+                </div>
+                {/* Category */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleFormChange}
+                    placeholder="Enter category"
+                    required
+                    className="w-full border border-gray-300 rounded-md p-2 outline-none focus:ring-2 focus:ring-green-200"
+                  />
+                </div>
+                {/* Priority */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Priority</label>
+                  <select
+                    name="priority"
+                    value={formData.priority}
+                    onChange={handleFormChange}
+                    required
+                    className="w-full border border-gray-300 rounded-md p-2 outline-none focus:ring-2 focus:ring-green-200"
+                  >
+                    <option value="">Select priority</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                    <option value="Critical">Critical</option>
+                  </select>
+                </div>
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={createLoading}
+                  className="w-full py-3 rounded-md bg-green-500 text-white font-semibold hover:bg-green-600 transition disabled:opacity-60"
+                >
+                  {createLoading ? "Submitting..." : "Submit Ticket"}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
 
         {/* Filters Row */}
         <div className="flex flex-wrap gap-4 mb-6 items-center">
